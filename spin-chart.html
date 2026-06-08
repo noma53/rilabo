@@ -1,0 +1,842 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>産業リハ 無料相談チャート | りらぼ</title>
+<meta name="description" content="6つの質問に答えるだけで、御社に最適な産業リハビリの始め方がわかります。りらぼの無料相談チャート。">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+
+:root {
+  --primary:       #72B83E;
+  --primary-light: #90CC5C;
+  --primary-dark:  #559228;
+  --primary-pale:  #EEF7E6;
+  --accent-warn:   #E8A33A;
+  --accent-warn-pale: #FDF3E0;
+  --accent-info:   #3A7DB8;
+  --accent-info-pale: #E4EFF8;
+  --gray:          #5A6472;
+  --gray-light:    #8A96A2;
+  --gray-pale:     #F2F4F6;
+  --bg:            #F5F8F2;
+  --bg-card:       #FFFFFF;
+  --text:          #1A2130;
+  --text-muted:    #5A6472;
+  --text-light:    #8A96A2;
+  --border:        #E4EAE0;
+  --radius:        18px;
+  --radius-sm:     12px;
+  --shadow:        0 6px 24px rgba(40,70,20,0.08);
+  --shadow-hover:  0 12px 36px rgba(40,70,20,0.14);
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.7;
+  -webkit-font-smoothing: antialiased;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 32px 16px 80px;
+}
+
+/* ===== ページ全体の薄い背景装飾 ===== */
+body::before {
+  content: '';
+  position: fixed; inset: 0;
+  background:
+    radial-gradient(800px 500px at 10% 0%, rgba(114,184,62,0.08), transparent 60%),
+    radial-gradient(700px 600px at 90% 100%, rgba(58,125,184,0.06), transparent 60%);
+  pointer-events: none; z-index: 0;
+}
+
+.chart-wrap {
+  position: relative; z-index: 1;
+  width: 100%; max-width: 560px;
+}
+
+/* ===== HEADER (カード上部) ===== */
+.chart-header {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  color: #fff;
+  border-radius: var(--radius) var(--radius) 0 0;
+  padding: 22px 26px;
+  display: flex; align-items: center; gap: 16px;
+  box-shadow: var(--shadow);
+}
+.chart-logo {
+  width: 56px; height: 56px; border-radius: 50%;
+  background: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.3rem; font-weight: 700;
+  color: var(--primary-dark);
+  flex-shrink: 0;
+}
+.chart-title {
+  font-size: 1.15rem; font-weight: 700; letter-spacing: 0.02em;
+  line-height: 1.4;
+}
+.chart-subtitle {
+  font-size: 0.78rem; font-weight: 400; opacity: 0.9;
+  margin-top: 4px;
+}
+
+/* ===== CARD BODY ===== */
+.chart-card {
+  background: var(--bg-card);
+  border-radius: 0 0 var(--radius) var(--radius);
+  padding: 28px 26px 32px;
+  box-shadow: var(--shadow);
+}
+
+/* ===== STEP INDICATOR ===== */
+.step-indicator {
+  font-size: 0.78rem; font-weight: 600; letter-spacing: 0.08em;
+  color: var(--text-light);
+  margin-bottom: 8px;
+}
+.progress-bar {
+  display: flex; gap: 6px;
+  margin-bottom: 22px;
+}
+.progress-segment {
+  flex: 1; height: 6px; border-radius: 3px;
+  background: #E4EAE0;
+  transition: background 0.4s ease;
+}
+.progress-segment.done { background: var(--primary); }
+.progress-segment.current { background: var(--primary-dark); }
+
+/* ===== TYPE BADGE ===== */
+.type-badge {
+  display: inline-block;
+  font-size: 0.78rem; font-weight: 700;
+  padding: 4px 12px; border-radius: 100px;
+  margin-bottom: 14px;
+}
+.badge-s { background: var(--accent-info-pale); color: var(--accent-info); }
+.badge-p { background: #FDE8E8; color: #C84545; }
+.badge-i { background: var(--accent-warn-pale); color: var(--accent-warn); }
+.badge-n { background: var(--primary-pale); color: var(--primary-dark); }
+.badge-meta { background: var(--gray-pale); color: var(--gray); }
+
+/* ===== QUESTION ===== */
+.question-box {
+  background: #FAFBF8;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 16px 18px;
+  margin-bottom: 18px;
+}
+.question-title {
+  font-size: 1.02rem; font-weight: 700; color: var(--text);
+  line-height: 1.55;
+}
+.question-note {
+  font-size: 0.8rem; color: var(--text-light); margin-top: 6px;
+}
+
+/* ===== OPTIONS ===== */
+.option-list {
+  display: flex; flex-direction: column; gap: 10px;
+  margin-bottom: 22px;
+}
+.option {
+  display: block;
+  background: #fff;
+  border: 1.5px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 14px 18px;
+  font-size: 0.95rem; font-weight: 500;
+  color: var(--text);
+  cursor: pointer;
+  transition: all 0.2s ease;
+  user-select: none;
+  position: relative;
+}
+.option:hover {
+  border-color: var(--primary-light);
+  background: var(--primary-pale);
+}
+.option input {
+  position: absolute; opacity: 0; pointer-events: none;
+}
+.option.selected {
+  border-color: var(--primary-dark);
+  background: var(--primary-pale);
+  color: var(--primary-dark);
+  font-weight: 700;
+  box-shadow: 0 0 0 3px rgba(114,184,62,0.12);
+}
+.option.selected::after {
+  content: '✓';
+  position: absolute; right: 16px; top: 50%;
+  transform: translateY(-50%);
+  color: var(--primary-dark);
+  font-weight: 900;
+}
+
+/* ===== NAV BUTTONS ===== */
+.btn-row {
+  display: flex; gap: 10px;
+}
+.btn {
+  flex: 1;
+  font-family: inherit;
+  font-size: 0.98rem; font-weight: 700;
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  border: none;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+.btn:disabled {
+  opacity: 0.4;
+  cursor: not-allowed;
+}
+.btn-next {
+  background: var(--primary-dark);
+  color: #fff;
+  flex: 2;
+}
+.btn-next:not(:disabled):hover {
+  background: var(--primary);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+.btn-back {
+  background: var(--gray-pale);
+  color: var(--text-muted);
+}
+.btn-back:hover {
+  background: #E8EBE4;
+}
+
+/* ===== RESULT SCREEN ===== */
+.result-hero {
+  background: linear-gradient(135deg, var(--primary-dark) 0%, var(--primary) 100%);
+  color: #fff;
+  border-radius: var(--radius-sm);
+  padding: 22px 22px 20px;
+  margin-bottom: 18px;
+}
+.result-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.14em;
+  text-transform: uppercase;
+  opacity: 0.85;
+  margin-bottom: 6px;
+}
+.result-plan {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.55rem; font-weight: 700;
+  line-height: 1.35;
+  margin-bottom: 8px;
+}
+.result-tagline {
+  font-size: 0.88rem;
+  opacity: 0.95;
+}
+
+.result-reason {
+  background: #FAFBF8;
+  border-left: 4px solid var(--primary);
+  border-radius: var(--radius-sm);
+  padding: 14px 16px;
+  margin-bottom: 18px;
+  font-size: 0.88rem; color: var(--text-muted);
+  line-height: 1.75;
+}
+.result-reason strong { color: var(--primary-dark); }
+
+.plan-features {
+  list-style: none;
+  margin-bottom: 18px;
+}
+.plan-features li {
+  font-size: 0.9rem;
+  color: var(--text-muted);
+  padding: 8px 0 8px 26px;
+  position: relative;
+  border-bottom: 1px dashed var(--border);
+}
+.plan-features li:last-child { border-bottom: none; }
+.plan-features li::before {
+  content: '✓';
+  position: absolute; left: 4px; top: 8px;
+  color: var(--primary);
+  font-weight: 900;
+}
+
+.profile-strip {
+  display: flex; gap: 12px; align-items: center;
+  background: var(--gray-pale);
+  border-radius: var(--radius-sm);
+  padding: 12px 14px;
+  margin-bottom: 18px;
+}
+.profile-icon {
+  width: 44px; height: 44px; border-radius: 50%;
+  background: var(--primary-dark); color: #fff;
+  display: flex; align-items: center; justify-content: center;
+  font-family: 'Noto Serif JP', serif; font-weight: 700;
+  font-size: 1.15rem; flex-shrink: 0;
+}
+.profile-name { font-size: 0.95rem; font-weight: 700; }
+.profile-role { font-size: 0.78rem; color: var(--text-muted); line-height: 1.5; }
+
+.cta-primary {
+  display: block;
+  background: var(--primary-dark);
+  color: #fff;
+  font-weight: 700;
+  font-size: 1rem;
+  padding: 16px 20px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  text-decoration: none;
+  margin-bottom: 10px;
+  transition: all 0.2s ease;
+}
+.cta-primary:hover {
+  background: var(--primary);
+  box-shadow: var(--shadow-hover);
+  transform: translateY(-1px);
+}
+.cta-secondary {
+  display: block;
+  background: #fff;
+  color: var(--primary-dark);
+  border: 1.5px solid var(--primary-dark);
+  font-weight: 700;
+  font-size: 0.95rem;
+  padding: 14px 20px;
+  border-radius: var(--radius-sm);
+  text-align: center;
+  text-decoration: none;
+  margin-bottom: 8px;
+  transition: all 0.2s ease;
+}
+.cta-secondary:hover {
+  background: var(--primary-pale);
+}
+
+.restart-link {
+  display: block; text-align: center;
+  font-size: 0.82rem; color: var(--text-light);
+  margin-top: 18px; cursor: pointer;
+  text-decoration: underline; text-underline-offset: 3px;
+  background: none; border: none; width: 100%;
+  font-family: inherit;
+}
+.restart-link:hover { color: var(--text-muted); }
+
+/* ===== FOOTER ===== */
+.chart-footer {
+  text-align: center;
+  margin-top: 20px;
+  font-size: 0.78rem;
+  color: var(--text-light);
+}
+.chart-footer a {
+  color: var(--primary-dark);
+  text-decoration: none;
+  font-weight: 600;
+}
+.chart-footer a:hover { text-decoration: underline; }
+
+/* ===== ANIMATION ===== */
+.step { display: none; }
+.step.active { display: block; animation: fadeSlide 0.35s ease; }
+@keyframes fadeSlide {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 480px) {
+  body { padding: 16px 12px 60px; }
+  .chart-header { padding: 18px 20px; }
+  .chart-card { padding: 22px 20px 26px; }
+  .chart-title { font-size: 1.02rem; }
+  .result-plan { font-size: 1.35rem; }
+  .option { font-size: 0.92rem; padding: 13px 16px; }
+}
+</style>
+</head>
+<body>
+
+<div class="chart-wrap">
+
+  <!-- HEADER -->
+  <div class="chart-header">
+    <div class="chart-logo">り</div>
+    <div>
+      <div class="chart-title">産業リハ 無料相談チャート</div>
+      <div class="chart-subtitle">りらぼ｜産業リハビリ専門</div>
+    </div>
+  </div>
+
+  <!-- CARD -->
+  <div class="chart-card" id="card">
+
+    <!-- STEP 1: Situation (状況) -->
+    <div class="step active" data-step="1">
+      <div class="step-indicator">STEP 1 / 6</div>
+      <div class="progress-bar">
+        <div class="progress-segment current"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+      </div>
+      <span class="type-badge badge-s">S：状況質問</span>
+      <div class="question-box">
+        <div class="question-title">職場でこんなお悩みはありますか？</div>
+        <div class="question-note">当てはまるものをすべて選んでください（複数選択可）</div>
+      </div>
+      <div class="option-list" data-multi="true" data-key="situation">
+        <label class="option"><input type="checkbox" value="back_pain" data-score="2">腰痛・肩こりで休む人がいる</label>
+        <label class="option"><input type="checkbox" value="aging" data-score="2">高齢スタッフが増えてきた</label>
+        <label class="option"><input type="checkbox" value="turnover" data-score="3">ケガや体の不調で退職者が出た</label>
+        <label class="option"><input type="checkbox" value="young_quit" data-score="2">若手の離職が多い</label>
+        <label class="option"><input type="checkbox" value="brand" data-score="1">健康経営に取り組みたい</label>
+        <label class="option"><input type="checkbox" value="none" data-score="0">特に今は問題ない</label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-next" data-action="next" disabled>次へ →</button>
+      </div>
+    </div>
+
+    <!-- STEP 2: Problem (問題) -->
+    <div class="step" data-step="2">
+      <div class="step-indicator">STEP 2 / 6</div>
+      <div class="progress-bar">
+        <div class="progress-segment done"></div>
+        <div class="progress-segment current"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+      </div>
+      <span class="type-badge badge-p">P：問題質問</span>
+      <div class="question-box">
+        <div class="question-title">その不調に対し、今どんな対応をしていますか？</div>
+        <div class="question-note">最も近いものを選んでください</div>
+      </div>
+      <div class="option-list" data-multi="false" data-key="problem">
+        <label class="option"><input type="radio" name="problem" value="nothing" data-score="3">特に何もしていない</label>
+        <label class="option"><input type="radio" name="problem" value="rotation" data-score="2">休憩や配置転換で対応している</label>
+        <label class="option"><input type="radio" name="problem" value="outsource" data-score="1">産業医や整骨院に任せている</label>
+        <label class="option"><input type="radio" name="problem" value="in_house" data-score="1">自社で健康研修を行っている</label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-back" data-action="back">← 戻る</button>
+        <button class="btn btn-next" data-action="next" disabled>次へ →</button>
+      </div>
+    </div>
+
+    <!-- STEP 3: Implication (示唆) -->
+    <div class="step" data-step="3">
+      <div class="step-indicator">STEP 3 / 6</div>
+      <div class="progress-bar">
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment current"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+      </div>
+      <span class="type-badge badge-i">I：示唆質問</span>
+      <div class="question-box">
+        <div class="question-title">このまま変わらなかった場合、1〜2年後に最も心配なことは？</div>
+        <div class="question-note">一番「避けたい」未来を選んでください</div>
+      </div>
+      <div class="option-list" data-multi="false" data-key="implication">
+        <label class="option"><input type="radio" name="implication" value="leave" data-score="3">休職・退職者がさらに増える</label>
+        <label class="option"><input type="radio" name="implication" value="accident" data-score="3">労災リスクが高まる</label>
+        <label class="option"><input type="radio" name="implication" value="hiring" data-score="2">採用コストが膨らむ</label>
+        <label class="option"><input type="radio" name="implication" value="growth" data-score="2">若手・中堅が育たない</label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-back" data-action="back">← 戻る</button>
+        <button class="btn btn-next" data-action="next" disabled>次へ →</button>
+      </div>
+    </div>
+
+    <!-- STEP 4: Need-payoff (解決) -->
+    <div class="step" data-step="4">
+      <div class="step-indicator">STEP 4 / 6</div>
+      <div class="progress-bar">
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment current"></div>
+        <div class="progress-segment"></div>
+        <div class="progress-segment"></div>
+      </div>
+      <span class="type-badge badge-n">N：解決質問</span>
+      <div class="question-box">
+        <div class="question-title">もし理学療法士が職場に定期的に関わり、体の問題を事前に防げたとしたら？</div>
+        <div class="question-note">最も価値があると感じるものを選んでください</div>
+      </div>
+      <div class="option-list" data-multi="false" data-key="need">
+        <label class="option"><input type="radio" name="need" value="stable" data-score="2">欠勤・休職が減って現場が安定する</label>
+        <label class="option"><input type="radio" name="need" value="retain" data-score="2">スタッフが長く働いてくれる</label>
+        <label class="option"><input type="radio" name="need" value="brand"  data-score="3">健康経営として対外的にアピールできる</label>
+        <label class="option"><input type="radio" name="need" value="productivity" data-score="2">生産性・現場パフォーマンスが上がる</label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-back" data-action="back">← 戻る</button>
+        <button class="btn btn-next" data-action="next" disabled>次へ →</button>
+      </div>
+    </div>
+
+    <!-- STEP 5: 会社規模 -->
+    <div class="step" data-step="5">
+      <div class="step-indicator">STEP 5 / 6</div>
+      <div class="progress-bar">
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment current"></div>
+        <div class="progress-segment"></div>
+      </div>
+      <span class="type-badge badge-meta">会社情報</span>
+      <div class="question-box">
+        <div class="question-title">貴社の社員数はどのくらいですか？</div>
+        <div class="question-note">おおよそで構いません</div>
+      </div>
+      <div class="option-list" data-multi="false" data-key="size">
+        <label class="option"><input type="radio" name="size" value="xs" data-score="1">〜30名</label>
+        <label class="option"><input type="radio" name="size" value="s"  data-score="2">31〜100名</label>
+        <label class="option"><input type="radio" name="size" value="m"  data-score="3">101〜300名</label>
+        <label class="option"><input type="radio" name="size" value="l"  data-score="4">301名以上</label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-back" data-action="back">← 戻る</button>
+        <button class="btn btn-next" data-action="next" disabled>次へ →</button>
+      </div>
+    </div>
+
+    <!-- STEP 6: 希望の進め方 -->
+    <div class="step" data-step="6">
+      <div class="step-indicator">STEP 6 / 6</div>
+      <div class="progress-bar">
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment done"></div>
+        <div class="progress-segment current"></div>
+      </div>
+      <span class="type-badge badge-meta">希望する進め方</span>
+      <div class="question-box">
+        <div class="question-title">まずどこから始めたいですか？</div>
+        <div class="question-note">最もイメージに近いものを選んでください</div>
+      </div>
+      <div class="option-list" data-multi="false" data-key="approach">
+        <label class="option"><input type="radio" name="approach" value="light" data-score="0">現状を把握するために、まず1回だけ試したい</label>
+        <label class="option"><input type="radio" name="approach" value="standard" data-score="0">現場訪問＋施術＋改善提案を本格的に進めたい</label>
+        <label class="option"><input type="radio" name="approach" value="max" data-score="0">健康経営認定や経営レベルで継続的に取り組みたい</label>
+        <label class="option"><input type="radio" name="approach" value="consult" data-score="0">まだ決めていない・まず相談したい</label>
+      </div>
+      <div class="btn-row">
+        <button class="btn btn-back" data-action="back">← 戻る</button>
+        <button class="btn btn-next" data-action="submit" disabled>診断結果を見る →</button>
+      </div>
+    </div>
+
+    <!-- RESULT -->
+    <div class="step" data-step="result">
+      <div id="result-content"></div>
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+  <div class="chart-footer">
+    ← <a href="hp_redesign.html">りらぼトップページへ戻る</a>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  "use strict";
+
+  // 回答データ
+  const answers = {
+    situation: [],     // 複数選択: value配列
+    problem: null,
+    implication: null,
+    need: null,
+    size: null,
+    approach: null
+  };
+
+  // スコア合計用（複数選択はスコア合算）
+  function getScore(key) {
+    const list = document.querySelector(`.option-list[data-key="${key}"]`);
+    if (!list) return 0;
+    const multi = list.dataset.multi === "true";
+    const inputs = list.querySelectorAll("input");
+    let score = 0;
+    inputs.forEach(inp => {
+      if (inp.checked) score += parseInt(inp.dataset.score || "0", 10);
+    });
+    return score;
+  }
+
+  // 選択状態UI更新 ＆ 「次へ」活性制御
+  function refreshOptionUI(list) {
+    const inputs = list.querySelectorAll("input");
+    let any = false;
+    inputs.forEach(inp => {
+      const label = inp.closest(".option");
+      if (inp.checked) { label.classList.add("selected"); any = true; }
+      else             { label.classList.remove("selected"); }
+    });
+    // その step の next ボタン
+    const step = list.closest(".step");
+    const nextBtn = step.querySelector("[data-action='next'], [data-action='submit']");
+    if (nextBtn) nextBtn.disabled = !any;
+  }
+
+  // 初期化：すべての option-list にリスナー
+  document.querySelectorAll(".option-list").forEach(list => {
+    const multi = list.dataset.multi === "true";
+    const key = list.dataset.key;
+
+    list.addEventListener("change", () => {
+      // answers 更新
+      if (multi) {
+        const checked = list.querySelectorAll("input:checked");
+        answers[key] = Array.from(checked).map(i => i.value);
+      } else {
+        const one = list.querySelector("input:checked");
+        answers[key] = one ? one.value : null;
+      }
+      refreshOptionUI(list);
+    });
+
+    // 「特に問題ない」のような排他オプション（S：situation）
+    if (key === "situation") {
+      list.addEventListener("change", (e) => {
+        const t = e.target;
+        if (t.value === "none" && t.checked) {
+          list.querySelectorAll("input").forEach(inp => {
+            if (inp !== t) inp.checked = false;
+          });
+          answers.situation = ["none"];
+        } else if (t.value !== "none" && t.checked) {
+          const noneInp = list.querySelector("input[value='none']");
+          if (noneInp) noneInp.checked = false;
+          answers.situation = answers.situation.filter(v => v !== "none");
+        }
+        refreshOptionUI(list);
+      });
+    }
+  });
+
+  // ナビゲーション
+  let currentStep = 1;
+  const maxStep = 6;
+
+  function showStep(n) {
+    document.querySelectorAll(".step").forEach(s => s.classList.remove("active"));
+    const target = (n === "result")
+      ? document.querySelector(".step[data-step='result']")
+      : document.querySelector(`.step[data-step='${n}']`);
+    if (target) target.classList.add("active");
+    window.scrollTo({ top: 0, behavior: "smooth" });
+  }
+
+  document.addEventListener("click", (e) => {
+    const btn = e.target.closest("[data-action]");
+    if (!btn) return;
+    const action = btn.dataset.action;
+
+    if (action === "next") {
+      if (currentStep < maxStep) { currentStep++; showStep(currentStep); }
+    } else if (action === "back") {
+      if (currentStep > 1) { currentStep--; showStep(currentStep); }
+    } else if (action === "submit") {
+      renderResult();
+      showStep("result");
+    } else if (action === "restart") {
+      resetAll();
+    }
+  });
+
+  // ===== 診断ロジック =====
+  function decidePlan() {
+    // Step6で明示的に希望があれば優先
+    if (answers.approach === "light")    return "LIGHT";
+    if (answers.approach === "standard") return "STANDARD";
+    if (answers.approach === "max")      return "MAX";
+    if (answers.approach === "consult")  return "CONSULT";
+
+    // スコアベースで判定
+    const total = getScore("situation") + getScore("problem")
+                + getScore("implication") + getScore("need");
+    const sizeScore = getScore("size");
+
+    if (total >= 9 && sizeScore >= 3) return "MAX";
+    if (total >= 6) return "STANDARD";
+    return "LIGHT";
+  }
+
+  // プランの内容
+  const PLANS = {
+    LIGHT: {
+      label: "おすすめプラン",
+      name: "ライトプラン",
+      tagline: "まず1回のセミナーで現場の課題を可視化",
+      features: [
+        "オンライン／オフライン選択可",
+        "事後アンケート集計・フィードバック",
+        "簡易レポート納品"
+      ],
+      cta: "ライトプランで無料相談する",
+      anchor: "hp_redesign.html#offer"
+    },
+    STANDARD: {
+      label: "おすすめプラン｜Most Popular",
+      name: "スタンダードプラン",
+      tagline: "現場訪問・施術・セミナー・改善提案まで本格的に",
+      features: [
+        "現場ヒアリング・環境チェック",
+        "個別施術＋グループセミナー",
+        "効果測定・詳細報告書納品",
+        "改善提案レポート"
+      ],
+      cta: "スタンダードで無料相談する",
+      anchor: "hp_redesign.html#offer"
+    },
+    MAX: {
+      label: "おすすめプラン",
+      name: "マックスプラン",
+      tagline: "継続伴走で不調構造を根本から変える",
+      features: [
+        "スタンダード全内容込み",
+        "定期訪問・継続施術プログラム",
+        "KPI定点観測・経営層向けレポート",
+        "健康経営認定取得支援"
+      ],
+      cta: "マックスで無料相談する",
+      anchor: "hp_redesign.html#offer"
+    },
+    CONSULT: {
+      label: "まずは",
+      name: "無料相談からスタート",
+      tagline: "ご要望を聞いたうえで、最適なプランをご提案します",
+      features: [
+        "Zoomまたは訪問でのヒアリング（60分）",
+        "現状課題の整理と方向性のすり合わせ",
+        "御社に合うプラン・費用感のご提案",
+        "強引な営業は一切なし"
+      ],
+      cta: "まず無料相談を申し込む",
+      anchor: "hp_redesign.html#contact"
+    }
+  };
+
+  // 結果画面の理由テキスト
+  function buildReason(plan) {
+    const parts = [];
+    const s = answers.situation || [];
+    if (s.includes("turnover")) parts.push("<strong>退職者が出ている</strong>状況");
+    else if (s.includes("back_pain")) parts.push("<strong>腰痛・肩こり</strong>による業務影響");
+    else if (s.includes("aging"))     parts.push("<strong>高齢スタッフ増加</strong>への備え");
+    else if (s.includes("brand"))     parts.push("<strong>健康経営</strong>の推進");
+    else if (s.includes("young_quit"))parts.push("<strong>若手離職</strong>への対応");
+
+    if (answers.problem === "nothing")  parts.push("現時点で明確な対策がない");
+    else if (answers.problem === "rotation") parts.push("配置転換などの対処療法に留まっている");
+
+    if (answers.implication === "leave")    parts.push("休職・退職リスクへの危機感");
+    else if (answers.implication === "accident") parts.push("労災リスクへの懸念");
+    else if (answers.implication === "hiring")   parts.push("採用コスト増への懸念");
+
+    if (answers.need === "brand")        parts.push("健康経営としての対外発信を重視");
+    else if (answers.need === "retain")  parts.push("人材定着を最優先");
+    else if (answers.need === "productivity") parts.push("生産性向上を最優先");
+    else if (answers.need === "stable")  parts.push("現場オペレーションの安定を最優先");
+
+    const intro = (plan === "CONSULT")
+      ? "ご回答からは、まず方向性のすり合わせから始めるのが最適です。"
+      : `ご回答から「${PLANS[plan].name}」が最適と判定しました。`;
+
+    if (parts.length === 0) return intro;
+    return intro + "<br><br>特に " + parts.join("、") + " の点から、このプランを推奨します。";
+  }
+
+  function renderResult() {
+    const plan = decidePlan();
+    const p = PLANS[plan];
+    const featuresHtml = p.features.map(f => `<li>${f}</li>`).join("");
+
+    const html = `
+      <div class="result-hero">
+        <div class="result-label">${p.label}</div>
+        <div class="result-plan">${p.name}</div>
+        <div class="result-tagline">${p.tagline}</div>
+      </div>
+
+      <div class="result-reason">
+        ${buildReason(plan)}
+      </div>
+
+      <ul class="plan-features">${featuresHtml}</ul>
+
+      <div class="profile-strip">
+        <div class="profile-icon">り</div>
+        <div>
+          <div class="profile-name">りらぼ</div>
+          <div class="profile-role">理学療法士・産業リハビリ専門家<br>東三河エリア対応</div>
+        </div>
+      </div>
+
+      <a class="cta-primary" href="${p.anchor}">📞 ${p.cta}</a>
+      <a class="cta-secondary" href="hp_redesign.html#offer">全プランを詳しく見る</a>
+      <a class="cta-secondary" href="hp_redesign.html#profile">プロフィールを見る</a>
+
+      <button class="restart-link" data-action="restart">最初からやり直す</button>
+    `;
+    document.getElementById("result-content").innerHTML = html;
+  }
+
+  // リスタート
+  function resetAll() {
+    // チェック解除
+    document.querySelectorAll(".option input").forEach(inp => inp.checked = false);
+    document.querySelectorAll(".option.selected").forEach(el => el.classList.remove("selected"));
+    // 次へボタン無効化
+    document.querySelectorAll("[data-action='next'], [data-action='submit']").forEach(b => b.disabled = true);
+    // answers初期化
+    answers.situation = [];
+    answers.problem = null; answers.implication = null;
+    answers.need = null; answers.size = null; answers.approach = null;
+    // ステップを戻す
+    currentStep = 1;
+    showStep(1);
+  }
+
+})();
+</script>
+
+</body>
+</html>

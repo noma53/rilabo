@@ -1,0 +1,2043 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>働く身体 Re Design プロジェクト | りらぼ</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+JP:wght@300;400;500;600;700&family=Noto+Serif+JP:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; font-size: 17px; }
+@media (max-width: 900px) { html { font-size: 16.5px; } }
+
+:root {
+  --primary:       #72B83E;
+  --primary-light: #90CC5C;
+  --primary-dark:  #559228;
+  --primary-pale:  #EEF7E6;
+  --gray:          #5A6472;
+  --gray-light:    #8A96A2;
+  --gray-pale:     #F2F4F6;
+  --bg:            #FFFFFF;
+  --bg-section:    #F8FAF6;
+  --text:          #1A2130;
+  --text-muted:    #5A6472;
+  --text-light:    #8A96A2;
+  --border:        #E4EAE0;
+  --radius:        16px;
+  --radius-sm:     10px;
+  --shadow:        0 4px 20px rgba(40,70,20,0.07);
+  --shadow-hover:  0 8px 32px rgba(40,70,20,0.12);
+}
+
+body {
+  font-family: 'Noto Sans JP', sans-serif;
+  background: var(--bg);
+  color: var(--text);
+  line-height: 1.8;
+  -webkit-font-smoothing: antialiased;
+}
+
+/* ===== UTILITY ===== */
+.container { max-width: 1180px; margin: 0 auto; padding: 0 32px; }
+.section { padding: 84px 0; }
+.section-label {
+  font-size: 0.72rem; font-weight: 700; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--primary-dark);
+  margin-bottom: 10px;
+}
+.section-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.5rem, 3vw, 2.1rem);
+  font-weight: 700; line-height: 1.4; color: var(--text);
+  margin-bottom: 12px;
+}
+.section-subtitle {
+  font-size: 0.98rem; color: var(--text-muted);
+  max-width: 680px; line-height: 1.95;
+}
+.text-accent { color: var(--primary-dark); }
+.text-highlight {
+  background: linear-gradient(transparent 55%, rgba(114,184,62,0.22) 55%);
+  padding: 0 2px;
+}
+
+/* ===== PHOTO FRAME ===== */
+.photo-frame {
+  position: relative;
+  border-radius: var(--radius);
+  overflow: hidden;
+  background: linear-gradient(135deg, #E8EDE4 0%, #D5DDD0 100%);
+  box-shadow: var(--shadow);
+}
+.photo-frame img {
+  width: 100%; height: 100%;
+  object-fit: cover; display: block;
+  transition: transform 0.6s ease;
+}
+.photo-frame:hover img { transform: scale(1.03); }
+.photo-frame::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 55%, rgba(30,50,20,0.18) 100%);
+  pointer-events: none; z-index: 1;
+}
+.photo-badge {
+  position: absolute; bottom: 12px; right: 12px; z-index: 10;
+  background: rgba(255,255,255,0.92); border-radius: 100px;
+  padding: 5px 14px; font-size: 0.7rem; font-weight: 600;
+  color: var(--primary-dark); box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+  pointer-events: none;
+}
+.case-photo {
+  position: relative; overflow: hidden;
+  background: linear-gradient(135deg, #E8EDE4 0%, #D5DDD0 100%);
+  cursor: pointer; height: 180px;
+  border-radius: var(--radius-sm) var(--radius-sm) 0 0;
+}
+.case-photo img {
+  width: 100%; height: 100%; object-fit: cover; display: block;
+  transition: transform 0.5s ease;
+}
+.case-photo:hover img { transform: scale(1.05); }
+.case-photo .photo-badge {
+  bottom: 8px; right: 8px;
+  padding: 3px 10px; font-size: 0.65rem;
+}
+.case-photo::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(180deg, transparent 60%, rgba(20,40,10,0.25) 100%);
+  pointer-events: none;
+}
+
+/* ===== HEADER ===== */
+header {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 1000;
+  background: rgba(255,255,255,0.92);
+  backdrop-filter: blur(18px) saturate(180%);
+  -webkit-backdrop-filter: blur(18px) saturate(180%);
+  border-bottom: 1px solid rgba(0,0,0,0.06);
+  transition: box-shadow 0.3s;
+}
+header.scrolled { box-shadow: 0 2px 20px rgba(0,0,0,0.07); }
+nav {
+  display: flex; align-items: center; justify-content: space-between;
+  height: 68px; max-width: 1180px; margin: 0 auto; padding: 0 32px;
+}
+.nav-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none; flex-shrink: 0;
+}
+.nav-logo-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 42px; height: 42px; border-radius: 11px;
+  background: var(--primary); flex-shrink: 0;
+}
+.nav-logo-icon svg { display: block; }
+.nav-logo-text {
+  display: flex; flex-direction: column; line-height: 1;
+}
+.nav-logo-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.05rem; font-weight: 700;
+  color: var(--text); letter-spacing: 0.03em;
+  line-height: 1.2;
+}
+.nav-logo-en {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.62rem; font-weight: 700;
+  color: var(--primary-dark); letter-spacing: 0.32em;
+  text-transform: uppercase; margin-top: 2px;
+}
+.nav-links { display: flex; gap: 28px; align-items: center; }
+.nav-links a {
+  font-size: 0.82rem; font-weight: 500; color: var(--text-muted);
+  text-decoration: none; transition: color 0.2s;
+}
+.nav-links a:hover { color: var(--text); }
+.nav-cta {
+  background: var(--primary); color: #fff;
+  padding: 9px 22px; border-radius: 100px;
+  font-size: 0.8rem; font-weight: 700;
+  text-decoration: none; transition: background 0.2s, transform 0.2s;
+  font-family: 'Noto Sans JP', sans-serif;
+}
+.nav-cta:hover { background: var(--primary-dark); transform: translateY(-1px); }
+
+/* ===== BUTTONS ===== */
+.btn-primary {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: var(--primary); color: #fff;
+  padding: 14px 30px; border-radius: 100px;
+  font-size: 0.9rem; font-weight: 700;
+  text-decoration: none; border: none; cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(114,184,62,0.3);
+}
+.btn-primary:hover {
+  background: var(--primary-dark); transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(114,184,62,0.4);
+}
+.btn-outline {
+  display: inline-flex; align-items: center; gap: 8px;
+  background: transparent; color: var(--text);
+  padding: 13px 28px; border-radius: 100px;
+  font-size: 0.88rem; font-weight: 600;
+  text-decoration: none; border: 1.5px solid var(--border);
+  cursor: pointer; font-family: 'Noto Sans JP', sans-serif;
+  transition: border-color 0.2s, color 0.2s;
+}
+.btn-outline:hover { border-color: var(--primary); color: var(--primary-dark); }
+
+/* ===== DIAGNOSIS CTA EMPHASIS ===== */
+.btn-diagnose {
+  position: relative;
+  display: inline-flex; align-items: center; gap: 10px;
+  background: linear-gradient(135deg, #FF8A4C 0%, #FF6B35 100%);
+  color: #fff;
+  padding: 16px 32px; border-radius: 100px;
+  font-size: 0.95rem; font-weight: 700;
+  text-decoration: none; border: none; cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 6px 20px rgba(255,107,53,0.35);
+}
+.btn-diagnose:hover {
+  transform: translateY(-2px);
+  box-shadow: 0 10px 28px rgba(255,107,53,0.45);
+}
+.btn-diagnose::after {
+  content: ''; position: absolute; inset: -4px;
+  border-radius: 100px;
+  box-shadow: 0 0 0 0 rgba(255,107,53,0.55);
+  animation: pulseRing 2.2s ease-out infinite;
+  pointer-events: none;
+}
+@keyframes pulseRing {
+  0%   { box-shadow: 0 0 0 0 rgba(255,107,53,0.55); }
+  70%  { box-shadow: 0 0 0 14px rgba(255,107,53,0); }
+  100% { box-shadow: 0 0 0 0 rgba(255,107,53,0); }
+}
+.btn-badge {
+  position: absolute; top: -10px; right: -8px;
+  background: #fff; color: #FF6B35;
+  font-size: 0.65rem; font-weight: 800;
+  padding: 4px 10px; border-radius: 100px;
+  letter-spacing: 0.04em;
+  box-shadow: 0 3px 10px rgba(0,0,0,0.12);
+  border: 1.5px solid #FF6B35;
+  white-space: nowrap;
+}
+.cta-tagline {
+  display: inline-flex; align-items: center; gap: 8px;
+  font-size: 0.8rem; font-weight: 600; color: var(--primary-dark);
+  background: #F3FAEE; padding: 7px 14px; border-radius: 100px;
+  margin-bottom: 14px;
+  border: 1px dashed var(--primary);
+}
+.cta-tagline::before {
+  content: none;
+}
+.cta-micro-proof {
+  display: flex; gap: 14px; flex-wrap: wrap;
+  margin-top: 10px;
+  font-size: 0.75rem; color: var(--text-muted); font-weight: 600;
+}
+.cta-micro-proof span {
+  display: inline-flex; align-items: center; gap: 4px;
+}
+.cta-micro-proof span::before {
+  content: '✓'; color: var(--primary); font-weight: 800;
+}
+
+/* ===== DIAGNOSIS BANNER ===== */
+.diagnose-banner {
+  background: #F4F8F0;
+  border-top: none;
+  border-bottom: none;
+  padding: 36px 0;
+}
+.diagnose-banner-inner {
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 32px; align-items: center;
+}
+.diagnose-banner-text h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.05rem, 2vw, 1.35rem);
+  font-weight: 700; color: #2A5A10; line-height: 1.5;
+  margin-bottom: 8px;
+}
+.diagnose-banner-text p {
+  font-size: 0.88rem; color: #4A6A38; line-height: 1.8;
+}
+.diagnose-banner-text .step-chips {
+  display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px;
+}
+.diagnose-banner-text .step-chips span {
+  background: #fff; color: #3A7A18;
+  font-size: 0.72rem; font-weight: 700;
+  padding: 5px 11px; border-radius: 100px;
+  border: 1px solid #B8D8A0;
+}
+@media (max-width: 760px) {
+  .diagnose-banner-inner { grid-template-columns: 1fr; text-align: center; }
+  .diagnose-banner .btn-diagnose { justify-content: center; }
+}
+
+/* ===== NAV DIAGNOSE CTA ===== */
+.nav-diagnose {
+  background: #FFF2E8; color: #FF6B35 !important;
+  padding: 8px 16px; border-radius: 100px;
+  font-size: 0.78rem !important; font-weight: 700 !important;
+  border: 1.5px solid #FFBE95;
+  transition: background 0.2s, color 0.2s, transform 0.2s;
+  position: relative;
+}
+.nav-diagnose:hover {
+  background: #FF6B35; color: #fff !important;
+  transform: translateY(-1px);
+  border-color: #FF6B35;
+}
+.nav-diagnose::before {
+  content: none;
+}
+
+/* ===== HERO ===== */
+.hero { padding-top: 112px; padding-bottom: 76px; background: var(--bg); }
+.hero-inner {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: 52px; align-items: center;
+}
+.hero-eyebrow {
+  font-size: 0.75rem; font-weight: 700;
+  letter-spacing: 0.14em; text-transform: uppercase;
+  color: var(--primary); margin-bottom: 12px;
+}
+.hero-title {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.8rem, 3.8vw, 2.8rem);
+  font-weight: 700; line-height: 1.4;
+  color: var(--text); margin-bottom: 16px;
+}
+.line-accent {
+  color: var(--primary); position: relative;
+  display: inline-block;
+}
+.hero-subtitle {
+  font-size: 1.05rem; color: var(--text-muted);
+  line-height: 1.9; margin-bottom: 12px;
+}
+.hero-desc {
+  font-size: 0.9rem; color: var(--text-light);
+  line-height: 1.9; margin-bottom: 28px;
+}
+.hero-cta-group { display: flex; gap: 12px; flex-wrap: wrap; }
+.hero-photo { min-height: 400px; }
+
+/* ===== COST SECTION ===== */
+.cost-section {
+  background: var(--bg-section); padding: 68px 0;
+  border-top: 1px solid var(--border); border-bottom: 1px solid var(--border);
+}
+.cost-heading { text-align: center; margin-bottom: 40px; }
+.cost-heading h2 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: clamp(1.2rem, 2.4vw, 1.7rem);
+  font-weight: 700; color: var(--text); line-height: 1.5;
+}
+.cost-heading p {
+  font-size: 0.85rem; color: var(--text-muted);
+  margin-top: 12px; line-height: 1.9;
+}
+.cost-formula {
+  background: #fff; border-radius: var(--radius);
+  border: 1px solid var(--border);
+  padding: 28px 32px; margin-bottom: 20px;
+  box-shadow: var(--shadow);
+}
+.cost-formula-label {
+  font-size: 0.72rem; font-weight: 700;
+  letter-spacing: 0.12em; color: var(--primary);
+  text-transform: uppercase; margin-bottom: 18px;
+}
+.cost-calc-row {
+  display: flex; align-items: center; gap: 16px; flex-wrap: wrap;
+}
+.calc-block { text-align: center; }
+.calc-block-num {
+  font-size: 2.2rem; font-weight: 700; line-height: 1;
+  color: var(--text); font-family: 'Noto Serif JP', serif;
+}
+.calc-block-label { font-size: 0.68rem; color: var(--text-light); margin-top: 6px; line-height: 1.4; }
+.calc-op { font-size: 1.4rem; color: var(--gray-light); font-weight: 300; }
+.calc-result { background: var(--primary-pale); border-radius: var(--radius-sm); padding: 16px 24px; }
+.calc-result .calc-block-num { color: var(--primary-dark); font-size: 2.4rem; }
+.cost-scale {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 16px;
+}
+.cost-scale-card {
+  background: #fff; border-radius: var(--radius-sm);
+  border: 1px solid var(--border);
+  padding: 24px 20px; text-align: center;
+  box-shadow: var(--shadow);
+}
+.cost-scale-label { font-size: 0.75rem; color: var(--text-light); margin-bottom: 8px; }
+.cost-scale-num {
+  font-size: 2rem; font-weight: 700;
+  font-family: 'Noto Serif JP', serif;
+}
+.cost-scale-unit { font-size: 0.85rem; color: var(--text-muted); }
+
+/* ===== PROBLEM ===== */
+.problem { background: var(--bg); }
+.problem-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 22px;
+  margin-top: 40px;
+}
+.problem-card {
+  background: var(--bg-section); border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 30px 26px;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.problem-card:hover {
+  box-shadow: var(--shadow-hover); transform: translateY(-3px);
+}
+.problem-icon {
+  width: 44px; height: 44px; border-radius: 12px;
+  display: flex; align-items: center; justify-content: center;
+  font-size: 1.3rem; margin-bottom: 14px;
+}
+.problem-card h3 { font-size: 1.05rem; font-weight: 700; margin-bottom: 12px; }
+.problem-card p { font-size: 0.88rem; color: var(--text-muted); line-height: 1.9; }
+
+/* ===== AFFINITY ===== */
+.affinity { background: var(--bg-section); }
+.affinity-inner {
+  display: grid; grid-template-columns: 1fr 1.1fr;
+  gap: 52px; align-items: center;
+}
+.affinity-photo { min-height: 420px; }
+.voice-list { display: flex; flex-direction: column; gap: 12px; margin-top: 20px; }
+.voice-card {
+  background: #fff; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); padding: 18px 20px;
+  box-shadow: var(--shadow);
+}
+.voice-card p { font-size: 0.9rem; color: var(--text); line-height: 1.9; }
+.voice-role { font-size: 0.72rem; color: var(--text-light); margin-top: 8px; font-weight: 600; }
+.affinity-msg {
+  background: var(--primary-pale); border-radius: var(--radius-sm);
+  border: 1px solid rgba(114,184,62,0.2); padding: 18px 20px; margin-top: 14px;
+}
+.affinity-msg p { font-size: 0.9rem; color: var(--text); line-height: 1.95; }
+
+/* ===== SOLUTION ===== */
+.solution { background: var(--bg); }
+.solution-header { text-align: center; margin-bottom: 44px; }
+.process-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 22px;
+}
+.process-item {
+  background: var(--bg-section); border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 28px 26px;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.process-item:hover {
+  box-shadow: var(--shadow-hover); transform: translateY(-3px);
+}
+.process-num {
+  font-size: 0.68rem; font-weight: 700; letter-spacing: 0.12em;
+  color: var(--primary); text-transform: uppercase; margin-bottom: 10px;
+}
+.process-icon { font-size: 1.6rem; margin-bottom: 12px; }
+.process-item h3 { font-size: 1rem; font-weight: 700; margin-bottom: 12px; }
+.process-item p { font-size: 0.86rem; color: var(--text-muted); line-height: 1.9; }
+
+.concept-flow {
+  display: flex; align-items: center; gap: 10px;
+  flex-wrap: wrap; justify-content: center;
+  margin-top: 28px;
+  background: var(--bg-section); border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 20px 24px;
+}
+.concept-step {
+  background: #fff; border: 1px solid var(--border);
+  border-radius: 100px; padding: 6px 18px;
+  font-size: 0.78rem; font-weight: 600; color: var(--text);
+}
+.concept-step.accent { background: var(--primary); color: #fff; border-color: var(--primary); }
+.concept-arrow { color: var(--gray-light); font-size: 0.9rem; }
+
+/* ===== TRACK ===== */
+.track { background: var(--bg-section); }
+.track-header { text-align: center; margin-bottom: 40px; }
+.track-kpi {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 18px;
+  margin-bottom: 44px;
+}
+.track-kpi-card {
+  background: #fff; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); padding: 20px 18px; text-align: center;
+  box-shadow: var(--shadow);
+}
+.track-kpi-num {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 2.2rem; font-weight: 700; color: var(--primary-dark); line-height: 1;
+}
+.track-kpi-label {
+  font-size: 0.72rem; color: var(--text-light); margin-top: 8px; line-height: 1.5;
+}
+.track-cases-title {
+  font-size: 0.85rem; font-weight: 700; color: var(--text);
+  margin-bottom: 16px;
+}
+.track-cases {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 18px;
+  margin-bottom: 28px;
+}
+.case-card {
+  background: #fff; border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden;
+  box-shadow: var(--shadow);
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.case-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-2px); }
+.case-card-body { padding: 18px 20px 20px; }
+.case-header { display: flex; align-items: flex-start; gap: 12px; margin-bottom: 12px; }
+.case-icon { font-size: 1.4rem; flex-shrink: 0; }
+.case-org { font-size: 0.88rem; font-weight: 700; color: var(--text); }
+.case-type { font-size: 0.72rem; color: var(--text-light); margin-top: 2px; }
+.case-body { font-size: 0.86rem; color: var(--text-muted); line-height: 1.9; margin-bottom: 14px; }
+.case-tags { display: flex; gap: 6px; flex-wrap: wrap; }
+.case-tag {
+  background: var(--primary-pale); color: var(--primary-dark);
+  border-radius: 100px; padding: 3px 12px;
+  font-size: 0.7rem; font-weight: 600;
+  border: 1px solid rgba(114,184,62,0.25);
+}
+.seminar-titles-wrap {
+  background: #fff; border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 22px 24px;
+  box-shadow: var(--shadow);
+}
+.seminar-titles-head {
+  font-size: 0.82rem; font-weight: 700; color: var(--text);
+  margin-bottom: 16px;
+}
+.seminar-grid {
+  display: grid; grid-template-columns: repeat(2,1fr); gap: 10px;
+}
+.seminar-item {
+  background: var(--bg-section); border-radius: var(--radius-sm);
+  border: 1px solid var(--border); padding: 12px 16px;
+  font-size: 0.8rem; color: var(--text-muted); line-height: 1.6;
+}
+
+/* ===== OFFER ===== */
+.offer { background: var(--bg); }
+.offer-header { text-align: center; margin-bottom: 44px; }
+.pricing-grid {
+  display: grid; grid-template-columns: repeat(3,1fr); gap: 22px;
+}
+.pricing-card {
+  background: var(--bg-section); border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 30px 24px;
+  display: flex; flex-direction: column;
+  transition: box-shadow 0.3s, transform 0.3s;
+}
+.pricing-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+.pricing-card.featured {
+  background: var(--primary-dark); border-color: var(--primary-dark);
+  color: #fff; position: relative; transform: translateY(-6px);
+  box-shadow: 0 12px 40px rgba(85,146,40,0.3);
+}
+.pricing-card.featured:hover { transform: translateY(-9px); }
+.pricing-badge {
+  position: absolute; top: -14px; left: 50%; transform: translateX(-50%);
+  background: var(--primary-light); color: #fff;
+  padding: 5px 18px; border-radius: 100px;
+  font-size: 0.72rem; font-weight: 700; white-space: nowrap;
+}
+.pricing-plan { font-size: 0.72rem; font-weight: 700; letter-spacing: 0.12em; text-transform: uppercase; margin-bottom: 8px; }
+.pricing-name { font-family: 'Noto Serif JP', serif; font-size: 1.4rem; font-weight: 700; margin-bottom: 4px; }
+.pricing-card.featured .pricing-plan { color: rgba(255,255,255,0.7); }
+.pricing-desc {
+  font-size: 0.88rem; color: var(--text-muted); line-height: 1.85;
+  margin-bottom: 22px; flex: 1;
+}
+.pricing-card.featured .pricing-desc { color: rgba(255,255,255,0.75); }
+.pricing-features { list-style: none; margin-bottom: 22px; display: flex; flex-direction: column; gap: 9px; }
+.pricing-features li {
+  display: flex; align-items: flex-start; gap: 10px;
+  font-size: 0.88rem; color: var(--text); line-height: 1.7;
+}
+.pricing-card.featured .pricing-features li { color: rgba(255,255,255,0.9); }
+.pricing-features li::before { content: '✓'; color: var(--primary); font-weight: 700; flex-shrink: 0; }
+.pricing-card.featured .pricing-features li::before { color: var(--primary-light); }
+.pricing-cta {
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  padding: 13px; border-radius: 100px;
+  font-size: 0.84rem; font-weight: 700;
+  text-decoration: none; cursor: pointer; border: none;
+  font-family: 'Noto Sans JP', sans-serif;
+  transition: all 0.2s;
+}
+.pcta-outline {
+  background: #fff; color: var(--gray);
+  border: 1.5px solid #D0D8D0;
+}
+.pcta-outline:hover { border-color: var(--primary); color: var(--primary-dark); }
+.pcta-featured {
+  background: #fff; color: var(--primary-dark);
+  border: none; box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+.pcta-featured:hover { background: var(--primary-pale); }
+.narrowing-card {
+  background: var(--primary-pale); border: 1px solid rgba(114,184,62,0.25);
+  border-radius: var(--radius); padding: 22px 28px; margin-top: 20px;
+  display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 16px;
+}
+.narrowing-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+.narrowing-tags { display: flex; gap: 8px; flex-wrap: wrap; }
+.narrowing-tag {
+  background: #fff; border: 1px solid rgba(114,184,62,0.3);
+  border-radius: 100px; padding: 4px 14px;
+  font-size: 0.75rem; color: var(--primary-dark); font-weight: 600;
+}
+
+/* ===== TIMELINE ===== */
+.timeline-section { background: var(--bg-section); }
+.timeline-grid {
+  display: grid; grid-template-columns: repeat(4,1fr); gap: 18px;
+  margin-top: 40px;
+}
+.timeline-card {
+  background: #fff; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); padding: 20px 18px; text-align: center;
+  box-shadow: var(--shadow);
+}
+.timeline-num {
+  width: 40px; height: 40px; background: var(--primary-pale);
+  border-radius: 50%; display: flex; align-items: center; justify-content: center;
+  font-size: 0.8rem; font-weight: 700; color: var(--primary-dark);
+  margin: 0 auto 14px;
+}
+.timeline-card h3 { font-size: 0.95rem; font-weight: 700; margin-bottom: 10px; }
+.timeline-card p { font-size: 0.84rem; color: var(--text-muted); line-height: 1.85; }
+
+/* ===== PROFILE ===== */
+.profile { background: var(--bg); }
+.profile-inner {
+  display: grid; grid-template-columns: 1fr 1.5fr;
+  gap: 52px; align-items: start;
+}
+.profile-photo { min-height: 380px; }
+.profile-name {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 2rem; font-weight: 700; margin-bottom: 4px;
+}
+.profile-role { font-size: 0.82rem; color: var(--text-light); margin-bottom: 18px; }
+.profile-text { font-size: 0.94rem; color: var(--text-muted); line-height: 1.95; margin-bottom: 16px; }
+.profile-tags { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 18px; }
+.ptag {
+  background: var(--primary-pale); border: 1px solid rgba(114,184,62,0.25);
+  border-radius: 100px; padding: 4px 14px;
+  font-size: 0.72rem; color: var(--primary-dark); font-weight: 600;
+}
+.profile-quote {
+  background: var(--bg-section); border-radius: var(--radius-sm);
+  border-left: 3px solid var(--primary);
+  padding: 18px 22px; margin-top: 6px;
+}
+.profile-quote p { font-size: 0.94rem; color: var(--text); line-height: 2; }
+
+/* ===== FAQ ===== */
+.faq { background: var(--bg-section); }
+.faq-inner { max-width: 820px; margin: 0 auto; }
+.faq-list { display: flex; flex-direction: column; gap: 12px; margin-top: 40px; }
+.faq-item {
+  background: #fff; border-radius: var(--radius-sm);
+  border: 1px solid var(--border); padding: 22px 26px;
+  box-shadow: var(--shadow);
+}
+.faq-q { font-size: 0.96rem; font-weight: 700; color: var(--text); margin-bottom: 12px; }
+.faq-a { font-size: 0.88rem; color: var(--text-muted); line-height: 1.95; }
+
+/* ===== CONTACT SECTION ===== */
+.contact-section {
+  background: var(--bg-section); padding: 84px 0;
+  border-top: 1px solid var(--border);
+}
+.contact-header { text-align: center; margin-bottom: 44px; }
+.contact-inner {
+  display: grid; grid-template-columns: 1fr 1.6fr;
+  gap: 42px; align-items: start;
+}
+.contact-info {
+  background: #fff; border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 28px 26px;
+  box-shadow: var(--shadow);
+}
+.contact-info-title { font-size: 1.05rem; font-weight: 700; margin-bottom: 8px; }
+.contact-info-desc { font-size: 0.88rem; color: var(--text-muted); line-height: 1.9; margin-bottom: 22px; }
+.contact-info-item { padding: 16px 0; border-top: 1px solid var(--border); }
+.contact-info-label {
+  font-size: 0.65rem; font-weight: 700; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-light); margin-bottom: 6px;
+}
+.contact-info-value { font-size: 1.1rem; font-weight: 700; color: var(--text); }
+.contact-info-sub { font-size: 0.75rem; color: var(--text-light); margin-top: 4px; }
+.contact-form-wrap {
+  background: #fff; border-radius: var(--radius);
+  border: 1px solid var(--border); padding: 30px 28px;
+  box-shadow: var(--shadow); position: relative;
+}
+.form-row { display: grid; grid-template-columns: 1fr 1fr; gap: 16px; margin-bottom: 16px; }
+.form-row.single { grid-template-columns: 1fr; }
+.form-group { display: flex; flex-direction: column; gap: 6px; }
+.form-label {
+  font-size: 0.8rem; font-weight: 600; color: var(--text);
+  display: flex; align-items: center; gap: 6px;
+}
+.form-badge {
+  font-size: 0.62rem; font-weight: 700; padding: 2px 8px;
+  border-radius: 100px; line-height: 1.4;
+}
+.badge-required { background: var(--primary); color: #fff; }
+.badge-optional { background: var(--gray-pale); color: var(--text-light); }
+.form-control {
+  width: 100%; padding: 12px 16px; border-radius: var(--radius-sm);
+  border: 1.5px solid var(--border); font-size: 0.88rem;
+  font-family: 'Noto Sans JP', sans-serif; color: var(--text);
+  background: #fff; transition: border-color 0.2s, box-shadow 0.2s;
+  outline: none;
+}
+.form-control:focus {
+  border-color: var(--primary); box-shadow: 0 0 0 3px rgba(114,184,62,0.12);
+}
+.form-control::placeholder { color: var(--text-light); }
+select.form-control { appearance: none; cursor: pointer; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8'%3E%3Cpath d='M1 1l5 5 5-5' stroke='%238A96A2' stroke-width='1.5' fill='none' stroke-linecap='round'/%3E%3C/svg%3E"); background-repeat: no-repeat; background-position: right 14px center; padding-right: 36px; }
+textarea.form-control { resize: vertical; min-height: 110px; }
+.form-submit {
+  width: 100%; padding: 15px; border-radius: 100px;
+  background: var(--primary); color: #fff; border: none;
+  font-size: 0.95rem; font-weight: 700; cursor: pointer;
+  font-family: 'Noto Sans JP', sans-serif; margin-top: 8px;
+  transition: background 0.2s, transform 0.2s, box-shadow 0.2s;
+  box-shadow: 0 4px 16px rgba(114,184,62,0.3);
+}
+.form-submit:hover {
+  background: var(--primary-dark); transform: translateY(-2px);
+  box-shadow: 0 8px 24px rgba(114,184,62,0.4);
+}
+.form-note { font-size: 0.72rem; color: var(--text-light); text-align: center; margin-top: 12px; }
+.form-submit:disabled { opacity: 0.6; cursor: default; transform: none; }
+.chip-group { display: flex; flex-wrap: wrap; gap: 9px; margin-top: 4px; }
+.chip {
+  display: inline-flex; align-items: center; gap: 7px;
+  padding: 8px 15px; border-radius: 100px;
+  border: 1.5px solid var(--border); background: #fff;
+  font-size: 0.82rem; font-weight: 500; color: var(--text-muted);
+  cursor: pointer; user-select: none;
+  transition: border-color 0.18s, background 0.18s, color 0.18s, box-shadow 0.18s;
+}
+.chip input { position: absolute; opacity: 0; pointer-events: none; }
+.chip::before {
+  content: ''; width: 15px; height: 15px; border-radius: 5px;
+  border: 1.5px solid var(--gray-light); flex-shrink: 0;
+  background-size: 11px 11px; background-position: center; background-repeat: no-repeat;
+  transition: background 0.18s, border-color 0.18s;
+}
+.chip:hover { border-color: var(--primary-light); color: var(--text); }
+.chip:has(input:checked) {
+  border-color: var(--primary); background: var(--primary-pale);
+  color: var(--primary-dark); font-weight: 600;
+  box-shadow: 0 2px 10px rgba(114,184,62,0.18);
+}
+.chip:has(input:checked)::before {
+  background-color: var(--primary); border-color: var(--primary);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='%23fff' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M20 6 9 17l-5-5'/%3E%3C/svg%3E");
+}
+.chip input:focus-visible + span { outline: 2px solid var(--primary); outline-offset: 3px; border-radius: 4px; }
+.contact-success {
+  display: none;
+  flex-direction: column; align-items: center; text-align: center;
+  padding: 56px 32px;
+  background: linear-gradient(160deg, #F3FAEE 0%, #FFFFFF 70%);
+  border: 1px solid var(--border); border-radius: var(--radius);
+  box-shadow: var(--shadow);
+  animation: successPop 0.5s cubic-bezier(0.16,1,0.3,1);
+}
+.contact-success.show { display: flex; }
+.contact-success-icon {
+  width: 64px; height: 64px; border-radius: 50%;
+  display: flex; align-items: center; justify-content: center;
+  background: linear-gradient(135deg, var(--primary-light) 0%, var(--primary-dark) 100%);
+  box-shadow: 0 8px 24px rgba(114,184,62,0.4);
+  margin-bottom: 22px;
+  animation: iconPop 0.6s cubic-bezier(0.16,1,0.3,1) 0.1s both;
+}
+.contact-success h3 {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 1.3rem; font-weight: 700; color: var(--text);
+  margin-bottom: 12px;
+}
+.contact-success p {
+  font-size: 0.9rem; color: var(--text-muted); line-height: 1.9;
+}
+@keyframes successPop { from { opacity: 0; transform: translateY(16px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes iconPop { from { opacity: 0; transform: scale(0.4); } to { opacity: 1; transform: scale(1); } }
+.contact-badge {
+  position: fixed; bottom: 32px; right: 32px; z-index: 999;
+  background: #fff; border-radius: 18px;
+  border: 1px solid var(--border); padding: 20px 24px;
+  box-shadow: 0 14px 44px rgba(40,70,20,0.18), 0 2px 8px rgba(0,0,0,0.05);
+  text-align: center; min-width: 230px;
+  cursor: pointer; text-decoration: none;
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+}
+.contact-badge::before {
+  content: ''; position: absolute; inset: 0;
+  border-radius: 18px; padding: 1.5px;
+  background: linear-gradient(135deg, rgba(114,184,62,0.45), rgba(114,184,62,0));
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor; mask-composite: exclude;
+  pointer-events: none;
+}
+.contact-badge:hover { transform: translateY(-4px); box-shadow: 0 20px 52px rgba(40,70,20,0.22), 0 2px 8px rgba(0,0,0,0.06); }
+.contact-badge-dot {
+  display: inline-flex; align-items: center; gap: 7px;
+  font-size: 0.82rem; color: var(--primary-dark); font-weight: 700;
+  margin-bottom: 6px;
+}
+.contact-badge-dot::before {
+  content: ''; width: 9px; height: 9px; border-radius: 50%;
+  background: var(--primary);
+  box-shadow: 0 0 0 0 rgba(114,184,62,0.6);
+  animation: pulse 1.8s infinite;
+}
+@keyframes pulse {
+  0%   { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(114,184,62,0.55); }
+  70%  { opacity: 0.8; transform: scale(1.15); box-shadow: 0 0 0 8px rgba(114,184,62,0); }
+  100% { opacity: 1; transform: scale(1); box-shadow: 0 0 0 0 rgba(114,184,62,0); }
+}
+.contact-badge-sub { font-size: 0.76rem; color: var(--text-muted); margin-bottom: 14px; line-height: 1.55; }
+.contact-badge-btn {
+  display: block; background: var(--primary); color: #fff;
+  border-radius: 100px; padding: 11px 18px;
+  font-size: 0.88rem; font-weight: 700; letter-spacing: 0.02em;
+  font-family: 'Noto Sans JP', sans-serif;
+  box-shadow: 0 6px 18px rgba(114,184,62,0.35);
+  transition: background 0.2s;
+}
+.contact-badge:hover .contact-badge-btn { background: var(--primary-dark); }
+@media (max-width: 900px) {
+  .contact-inner { grid-template-columns: 1fr; }
+  .form-row { grid-template-columns: 1fr; }
+  .contact-badge {
+    bottom: 16px; right: 16px; left: 16px;
+    min-width: 0; padding: 14px 18px;
+    display: flex; align-items: center; justify-content: space-between; gap: 14px;
+    text-align: left;
+  }
+  .contact-badge-dot { margin-bottom: 2px; font-size: 0.78rem; }
+  .contact-badge-sub { display: none; }
+  .contact-badge-btn { padding: 10px 16px; font-size: 0.82rem; flex-shrink: 0; }
+}
+
+/* ===== NOTE SECTION ===== */
+.note-section { background: var(--bg); }
+.note-section-header { text-align: center; margin-bottom: 40px; }
+.note-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 22px;
+  margin-bottom: 28px;
+}
+.note-card {
+  background: var(--bg-section); border-radius: var(--radius);
+  border: 1px solid var(--border);
+  overflow: hidden; text-decoration: none; color: inherit;
+  display: flex; flex-direction: column;
+  transition: box-shadow 0.3s, transform 0.3s;
+  cursor: pointer;
+}
+.note-card:hover { box-shadow: var(--shadow-hover); transform: translateY(-3px); }
+.note-thumb {
+  width: 100%; aspect-ratio: 16/9; object-fit: cover;
+  background: var(--primary-pale);
+  display: block;
+}
+.note-thumb-placeholder {
+  width: 100%; aspect-ratio: 16/9;
+  background: linear-gradient(135deg, var(--primary-pale), #dff0c8);
+  display: flex; align-items: center; justify-content: center;
+  font-size: 2rem;
+}
+.note-card-body { padding: 14px 18px 18px; flex: 1; display: flex; flex-direction: column; }
+.note-card-date { font-size: 0.7rem; color: var(--text-light); margin-bottom: 8px; }
+.note-card-title {
+  font-size: 0.96rem; font-weight: 700; color: var(--text);
+  line-height: 1.65; margin-bottom: 12px; flex: 1;
+  display: -webkit-box; -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical; overflow: hidden;
+}
+.note-card-link {
+  font-size: 0.75rem; color: var(--primary-dark);
+  font-weight: 600; display: flex; align-items: center; gap: 4px;
+  margin-top: auto;
+}
+.note-card-tags { display: flex; gap: 5px; flex-wrap: wrap; margin-bottom: 8px; }
+.note-card-tag {
+  background: var(--primary-pale); color: var(--primary-dark);
+  border-radius: 100px; padding: 2px 9px;
+  font-size: 0.62rem; font-weight: 600;
+  border: 1px solid rgba(114,184,62,0.25);
+}
+.note-card-desc {
+  font-size: 0.82rem; color: var(--text-muted); line-height: 1.75;
+  display: -webkit-box; -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical; overflow: hidden;
+  margin-bottom: 10px;
+}
+.blog-all-link {
+  display: inline-flex; align-items: center; gap: 6px;
+  background: var(--primary); color: #fff;
+  padding: 12px 28px; border-radius: 100px;
+  font-size: 0.88rem; font-weight: 700;
+  text-decoration: none; transition: background 0.2s, transform 0.2s;
+}
+.blog-all-link:hover { background: var(--primary-dark); transform: translateY(-2px); }
+.note-badge-paid {
+  display: inline-flex; align-items: center; gap: 4px;
+  background: #FFF7ED; border: 1px solid #FED7AA;
+  color: #C2410C; border-radius: 100px;
+  padding: 2px 10px; font-size: 0.65rem; font-weight: 700;
+  margin-bottom: 8px; width: fit-content;
+}
+.note-cta-bar {
+  background: var(--primary-pale); border: 1px solid rgba(114,184,62,0.25);
+  border-radius: var(--radius); padding: 22px 28px;
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+@keyframes spin { to { transform: rotate(360deg); } }
+.note-loading {
+  text-align: center; padding: 48px; color: var(--text-light);
+  font-size: 0.85rem; grid-column: 1/-1;
+}
+.note-error {
+  text-align: center; padding: 32px; color: var(--text-light);
+  font-size: 0.82rem; grid-column: 1/-1;
+  background: var(--bg-section); border-radius: var(--radius);
+  border: 1px solid var(--border);
+}
+@media (max-width: 900px) {
+  .note-grid { grid-template-columns: 1fr; }
+}
+
+/* ===== FOOTER ===== */
+footer {
+  background: #111820; padding: 28px 0;
+  border-top: 1px solid rgba(255,255,255,0.06);
+}
+.footer-inner {
+  display: flex; align-items: center; justify-content: space-between;
+  flex-wrap: wrap; gap: 16px;
+}
+.footer-logo {
+  display: flex; align-items: center; gap: 10px;
+  text-decoration: none;
+}
+.footer-logo-icon {
+  display: flex; align-items: center; justify-content: center;
+  width: 38px; height: 38px; border-radius: 10px;
+  background: rgba(255,255,255,0.10); flex-shrink: 0;
+}
+.footer-logo-ja {
+  font-family: 'Noto Serif JP', serif;
+  font-size: 0.95rem; font-weight: 700;
+  color: #fff; line-height: 1.2;
+}
+.footer-logo-en {
+  font-family: 'Noto Sans JP', sans-serif;
+  font-size: 0.58rem; font-weight: 700;
+  color: rgba(255,255,255,0.45); letter-spacing: 0.3em;
+  text-transform: uppercase; margin-top: 2px;
+}
+.footer-copy { font-size: 0.72rem; color: rgba(255,255,255,0.35); }
+
+/* ===== ANIMATIONS ===== */
+.anim {
+  opacity: 0; transform: translateY(24px);
+  transition: opacity 0.65s cubic-bezier(.22,1,.36,1), transform 0.65s cubic-bezier(.22,1,.36,1);
+}
+.anim.visible { opacity: 1; transform: translateY(0); }
+.anim-d1 { transition-delay: 0.1s; }
+.anim-d2 { transition-delay: 0.2s; }
+.anim-d3 { transition-delay: 0.3s; }
+.anim-d4 { transition-delay: 0.4s; }
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 900px) {
+  .hero-inner, .affinity-inner, .profile-inner { grid-template-columns: 1fr; }
+  .hero-photo, .affinity-photo, .profile-photo { min-height: 300px; }
+  .problem-grid, .process-grid, .pricing-grid { grid-template-columns: 1fr; }
+  .track-kpi, .timeline-grid { grid-template-columns: repeat(2,1fr); }
+  .track-cases, .cost-scale, .seminar-grid { grid-template-columns: 1fr; }
+  .pricing-card.featured { transform: none; }
+  .nav-links { display: none; }
+}
+</style>
+
+<style>
+/* ===== FULL-BLEED HERO — 白背景画像を全面に ===== */
+
+#hero {
+  position: relative;
+  min-height: 760px;
+  display: flex;
+  align-items: center;
+  background: #EEF5E8;
+  overflow: hidden;
+  padding: 0;
+}
+
+/* ── 背景画像：ヒーロー全体を覆う ── */
+#hero-photo {
+  position: absolute !important;
+  inset: 0 !important;
+  left: 0 !important;
+  width: 100% !important;
+  z-index: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  background: #EEF5E8 !important;
+  min-height: unset !important;
+  overflow: hidden;
+}
+#hero-photo img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: 72% center;
+  display: block;
+}
+#hero-photo.photo-frame::before,
+#hero-photo.photo-frame::after { display: none !important; }
+#hero-photo .photo-badge { display: none !important; }
+
+/* ── 左側：テキスト読みやすさのため薄いグラデーション ── */
+#hero::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: 1;
+  background: linear-gradient(
+    to right,
+    rgba(238,245,232,0.92) 0%,
+    rgba(238,245,232,0.78) 22%,
+    rgba(238,245,232,0.40) 42%,
+    rgba(238,245,232,0.10) 58%,
+    transparent 72%
+  );
+  pointer-events: none;
+}
+
+/* ── ナビ下の細いグリーンライン ── */
+#hero::after {
+  content: '';
+  position: absolute;
+  top: 88px; left: 0; right: 0;
+  height: 1px;
+  background: linear-gradient(to right,
+    rgba(80,160,30,0.45) 0%,
+    rgba(80,160,30,0.15) 50%,
+    transparent 80%);
+  z-index: 3;
+  pointer-events: none;
+}
+
+/* ── テキストコンテナ ── */
+#hero .container {
+  position: relative;
+  z-index: 2;
+  padding-top: 0;
+  padding-bottom: 0;
+  width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+}
+.hero-content {
+  width: 44%;
+  max-width: 500px;
+  min-width: 300px;
+  padding-top: 130px;
+  padding-bottom: 60px;
+  text-align: left !important;
+}
+.hero-content .hero-cta-group {
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+.hero-content .cta-micro-proof {
+  display: flex !important;
+  justify-content: flex-start !important;
+}
+.hero-content .cta-tagline {
+  display: inline-flex !important;
+}
+
+/* ── ホバー拡大なし ── */
+#hero-photo img {
+  transition: none !important;
+}
+#hero-photo:hover img,
+#hero-photo img:hover {
+  transform: none !important;
+}
+
+/* テキスト：白/薄緑背景なので濃いダーク */
+#hero .hero-eyebrow { color: #3A8012; letter-spacing: 0.18em; }
+#hero .hero-title { color: #0E1A08; text-shadow: none; }
+#hero .hero-title .line-accent { color: #4AA018; }
+#hero .hero-subtitle { color: rgba(14,26,8,0.74); }
+#hero .hero-desc { color: rgba(14,26,8,0.54); }
+#hero .cta-tagline {
+  background: rgba(74,160,24,0.10);
+  border-color: rgba(74,160,24,0.38);
+  color: #326C10;
+}
+#hero .cta-micro-proof { color: rgba(14,26,8,0.42); }
+#hero .btn-outline {
+  border-color: rgba(14,26,8,0.22);
+  color: rgba(14,26,8,0.76);
+  background: rgba(255,255,255,0.55);
+}
+#hero .btn-outline:hover {
+  border-color: #4AA018;
+  color: #326C10;
+  background: rgba(74,160,24,0.08);
+}
+
+/* ヘッダー：白/薄緑ベースに合わせて透明白 */
+header { background: rgba(245,250,240,0.88) !important; border-bottom-color: rgba(0,0,0,0.06) !important; backdrop-filter: blur(6px); }
+header.scrolled { background: rgba(245,250,240,0.97) !important; box-shadow: 0 2px 14px rgba(0,0,0,0.07) !important; }
+.nav-logo-ja { color: #0E1A08 !important; }
+.nav-logo-en { color: #3A8012 !important; }
+.nav-links a { color: rgba(14,26,8,0.58) !important; }
+.nav-links a:hover { color: #0E1A08 !important; }
+
+/* モバイル */
+@media (max-width: 900px) {
+  #hero { min-height: 560px; }
+  #hero .container { padding-top: 110px; padding-bottom: 72px; }
+  #hero-photo img { object-position: 65% center; }
+  #hero::before {
+    background: linear-gradient(
+      to right,
+      rgba(238,245,232,0.95) 0%,
+      rgba(238,245,232,0.85) 35%,
+      rgba(238,245,232,0.50) 60%,
+      transparent 80%
+    );
+  }
+  .hero-content { max-width: 65%; }
+}
+@media (max-width: 600px) {
+  #hero { min-height: 480px; }
+  #hero .container { padding-top: 96px; padding-bottom: 56px; }
+  #hero::before { background: rgba(238,245,232,0.88); }
+  .hero-content { max-width: 100%; }
+}
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<header id="header">
+  <nav>
+    <a href="#top" class="nav-logo" aria-label="りらぼ - トップへ">
+      <span class="nav-logo-icon">
+        <svg viewBox="0 0 34 34" width="26" height="26" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+          <!-- Person in dynamic rehabilitation pose -->
+          <circle cx="17" cy="6" r="3.8" fill="white"/>
+          <line x1="17" y1="10.5" x2="17" y2="23" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+          <line x1="17" y1="15" x2="9" y2="10" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+          <line x1="17" y1="15" x2="26" y2="18" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+          <line x1="17" y1="23" x2="11" y2="32" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+          <line x1="17" y1="23" x2="24" y2="32" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+          <path d="M10 4.5 Q17 0 24 4.5" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.65"/>
+        </svg>
+      </span>
+      <span class="nav-logo-text">
+        <span class="nav-logo-ja">りらぼ</span>
+        <span class="nav-logo-en">RILABO</span>
+      </span>
+    </a>
+    <div class="nav-links">
+      <a href="#problem">課題</a>
+      <a href="#solution">解決策</a>
+      <a href="#track">実績</a>
+      <a href="#offer">プラン</a>
+      <a href="#profile">プロフィール</a>
+      <a href="blog/index.html">ブログ</a>
+      <a href="spin-chart.html" class="nav-diagnose">1分で課題診断</a>
+      <a href="#contact" class="nav-cta">無料相談</a>
+    </div>
+  </nav>
+</header>
+
+<!-- HERO -->
+<section class="hero" id="top">
+  <!-- フルブリード背景画像 -->
+  <div class="photo-frame" id="hero-photo">
+    <img src="img/hero-main.jpg" alt="働く身体をリデザイン" onerror="this.style.display='none'">
+  </div>
+  <!-- テキスト -->
+  <div class="container">
+    <div class="hero-content">
+      <div class="hero-eyebrow anim">産業理学療法 × 企業の健康経営</div>
+      <h1 class="hero-title anim anim-d1">
+        社員の慢性的な不調が<br><span class="line-accent">会社の損失</span>になっていませんか？
+      </h1>
+      <p class="hero-subtitle anim anim-d2">
+        生産性損失・人員配置崩壊・離職採用難。<br>
+        不調が経営課題になる前に、構造ごと変えます。
+      </p>
+      <p class="hero-desc anim anim-d2">
+        理学療法士が、現場に入り、触れ、測り、設計する。<br>
+        東三河エリアを中心に、製造業・公共機関・オフィス系企業に対応。
+      </p>
+      <div class="anim anim-d3">
+        <span class="cta-tagline">まずは1分で、自社の課題タイプを言語化</span>
+      </div>
+      <div class="hero-cta-group anim anim-d3">
+        <a href="spin-chart.html" class="btn-diagnose">
+          1分で課題診断する →
+          <span class="btn-badge">まずココから</span>
+        </a>
+        <a href="#contact" class="btn-outline">無料相談に進む</a>
+      </div>
+      <div class="cta-micro-proof anim anim-d3">
+        <span>所要時間 約1分</span>
+        <span>全3問・選択式</span>
+        <span>登録不要・完全無料</span>
+        <span>その場で結果表示</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- DIAGNOSE BANNER -->
+<section class="diagnose-banner">
+  <div class="container">
+    <div class="diagnose-banner-inner">
+      <div class="diagnose-banner-text">
+        <h3>「何から手をつければいいか分からない」を、1分で整理します。</h3>
+        <p>質問に答えるだけで、自社の不調パターンと優先して着手すべき領域が可視化されます。相談前の"頭の整理"として多くの担当者が活用中。</p>
+        <div class="step-chips">
+          <span>STEP 1　3問に回答</span>
+          <span>STEP 2　課題タイプ判定</span>
+          <span>STEP 3　次の一手を提示</span>
+        </div>
+      </div>
+      <a href="spin-chart.html" class="btn-diagnose">
+        無料で診断を始める →
+        <span class="btn-badge">1分</span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- AFFINITY -->
+<section class="section affinity" id="affinity">
+  <div class="container">
+    <div class="affinity-inner">
+      <div class="photo-frame affinity-photo anim" id="affinity-photo">
+        <img src="img/affinity-office.jpg" alt="オフィスで悩む社員" onerror="this.style.display='none'">
+      </div>
+      <div>
+        <div class="section-label anim">AFFINITY</div>
+        <h2 class="section-title anim anim-d1">こんなお悩み、<br>抱えていませんか？</h2>
+        <div class="voice-list">
+          <div class="voice-card anim anim-d1">
+            <p>「対策はしているのに欠勤・不調訴えが減らない。経営層への説明に使える根拠となるデータがほしい」</p>
+            <div class="voice-role">ー 製造業 労働衛生管理者</div>
+          </div>
+          <div class="voice-card anim anim-d2">
+            <p>「休職者が出るたびに現場が回らなくなる。残った社員への負担が重なって二次退職も怖い」</p>
+            <div class="voice-role">ー 中堅製造業 管理職</div>
+          </div>
+          <div class="voice-card anim anim-d3">
+            <p>「採用しても定着しない。体調を理由にした退職が多く、どう環境を改善すればいいかわからない」</p>
+            <div class="voice-role">ー IT企業 人事担当者</div>
+          </div>
+        </div>
+        <div class="affinity-msg anim anim-d4">
+          <p>私は18年間、医療現場で5万人以上の身体に触れてきました。その経験から気づいたのは、<strong>慢性的な不調の多くは「作業環境のズレ」と「身体負担の構造的な問題」</strong>が原因だということ。病院の外からアプローチし、企業全体の不調構造を変えることが今の私の使命です。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROBLEM -->
+<section class="section problem" id="problem">
+  <div class="container">
+    <div class="anim">
+      <div class="section-label">PROBLEM</div>
+      <h2 class="section-title">不調は「体の問題」ではなく<br><span class="text-accent">経営の問題</span>です</h2>
+      <p class="section-subtitle">身体症状そのものではなく、それが引き起こす経営上の損失・人員配置の崩壊・離職採用難——これが管理職・人事・労働衛生担当者が本当に悩んでいることです。</p>
+    </div>
+    <div class="problem-grid">
+      <div class="problem-card anim anim-d1">
+        <div class="problem-icon" style="background:#FFF7ED;"></div>
+        <h3>生産性損失</h3>
+        <p>欠勤より深刻な「在席しながら能力を発揮できない」状態（プレゼンティーイズム）が、静かに利益を削り続けています。年間数十万〜数百万円規模の損失が企業を蝕んでいます。</p>
+      </div>
+      <div class="problem-card anim anim-d2">
+        <div class="problem-icon" style="background:#FFF1F2;"></div>
+        <h3>人員配置の崩壊</h3>
+        <p>休職者が出るたびに現場が機能不全に。残った社員への過負荷が二次的な不調を引き起こし、連鎖的な欠員と配置見直しが慢性化します。</p>
+      </div>
+      <div class="problem-card anim anim-d3">
+        <div class="problem-icon" style="background:#F0EDFF;"></div>
+        <h3>離職・採用難</h3>
+        <p>体調を理由にした退職が採用コストを圧迫。「環境が改善されない職場」というブランド毀損が、採用競争力の低下と定着率悪化を招きます。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- BLOG SECTION -->
+<section class="section note-section" id="note" style="padding: 72px 0 80px;">
+  <div class="container">
+    <div class="note-section-header">
+      <div class="section-label anim">BLOG</div>
+      <h2 class="section-title anim anim-d1">最新ブログ記事</h2>
+      <p class="section-subtitle anim anim-d2" style="margin: 0 auto;">
+        論文エビデンスをもとに、産業リハビリ・健康経営・腰痛予防の<br>
+        現場で使える知識を理学療法士が直接発信しています。
+      </p>
+    </div>
+
+    <!-- 記事カード（posts.js から自動生成） -->
+    <div class="note-grid anim" id="blog-grid"></div>
+
+    <!-- ブログ一覧 & note CTA -->
+    <div style="text-align:center;margin-bottom:32px;" class="anim">
+      <a href="blog/index.html" class="blog-all-link">ブログ記事一覧を見る →</a>
+    </div>
+
+    <div class="note-cta-bar anim">
+      <div>
+        <p style="font-weight:700;font-size:0.95rem;margin-bottom:6px;">より深い内容はnoteで</p>
+        <p style="font-size:0.82rem;color:var(--text-muted);line-height:1.7;">ブログ記事の詳細版・実践ノウハウ・ケーススタディは<br>noteの有料記事で公開しています。</p>
+      </div>
+      <a href="https://note.com/sangyoupt" target="_blank" rel="noopener"
+         style="display:inline-flex;align-items:center;gap:8px;background:#41C9B4;color:#fff;padding:13px 28px;border-radius:100px;font-size:0.88rem;font-weight:700;text-decoration:none;white-space:nowrap;transition:background 0.2s,transform 0.2s;box-shadow:0 4px 16px rgba(65,201,180,0.3);"
+         onmouseover="this.style.background='#2eb09a';this.style.transform='translateY(-2px)'"
+         onmouseout="this.style.background='#41C9B4';this.style.transform='translateY(0)'">
+        noteで読む →
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- COST SECTION -->
+<section class="cost-section">
+  <div class="container">
+    <div class="cost-heading anim">
+      <h2>御社の社員が不調を抱えたまま働き続けると<br>年間いくら損失していますか？</h2>
+      <p>QQ法（クエスチョネア法）をもとにした試算。不調日数・時給・パフォーマンス低下率から、プレゼンティーイズムによる経済的損失を可視化できます。</p>
+    </div>
+    <div class="cost-formula anim anim-d1">
+      <div class="cost-formula-label">計算例（社員1人あたり・年間）</div>
+      <div class="cost-calc-row">
+        <div class="calc-block">
+          <div class="calc-block-num">10<span style="font-size:1rem;">日</span></div>
+          <div class="calc-block-label">不調による<br>パフォーマンス低下日数</div>
+        </div>
+        <div class="calc-op">×</div>
+        <div class="calc-block">
+          <div class="calc-block-num">8<span style="font-size:1rem;">h</span></div>
+          <div class="calc-block-label">1日の<br>勤務時間</div>
+        </div>
+        <div class="calc-op">×</div>
+        <div class="calc-block">
+          <div class="calc-block-num">3,000<span style="font-size:1rem;">円</span></div>
+          <div class="calc-block-label">時給換算</div>
+        </div>
+        <div class="calc-op">×</div>
+        <div class="calc-block">
+          <div class="calc-block-num" style="color:var(--primary);">30<span style="font-size:1rem;">%</span></div>
+          <div class="calc-block-label">パフォーマンス<br>低下率</div>
+        </div>
+        <div class="calc-op">=</div>
+        <div class="calc-block calc-result">
+          <div class="calc-block-num">72,000<span style="font-size:1rem;">円</span></div>
+          <div class="calc-block-label">年間損失<br>（1人あたり）</div>
+        </div>
+      </div>
+    </div>
+    <div class="cost-scale">
+      <div class="cost-scale-card anim anim-d1">
+        <div class="cost-scale-label">10人規模</div>
+        <div class="cost-scale-num" style="color:var(--text);">72<span class="cost-scale-unit">万円</span></div>
+        <div style="font-size:0.72rem; color:var(--text-light); margin-top:6px;">年間推定損失額</div>
+      </div>
+      <div class="cost-scale-card anim anim-d2">
+        <div class="cost-scale-label">30人規模</div>
+        <div class="cost-scale-num" style="color:#E05C00;">216<span class="cost-scale-unit">万円</span></div>
+        <div style="font-size:0.72rem; color:var(--text-light); margin-top:6px;">年間推定損失額</div>
+      </div>
+      <div class="cost-scale-card anim anim-d3">
+        <div class="cost-scale-label">100人規模</div>
+        <div class="cost-scale-num" style="color:#C0180C;">720<span class="cost-scale-unit">万円</span></div>
+        <div style="font-size:0.72rem; color:var(--text-light); margin-top:6px;">年間推定損失額</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- SOLUTION -->
+<section class="section solution" id="solution">
+  <div class="container">
+    <div class="solution-header">
+      <div class="section-label anim">SOLUTION</div>
+      <h2 class="section-title anim anim-d1">「触れる・測る・設計する」<br><span class="text-accent">6つのプロセス</span>で構造を変える</h2>
+      <p class="section-subtitle anim anim-d2">単なるセミナーでも整体でもない。身体負担を「設計し直す専門家」として、現場に入り、データを取り、御社専用の解決策を構築します。</p>
+    </div>
+    <div class="process-grid">
+      <div class="process-item anim anim-d1">
+        <div class="process-num">STEP 01</div>
+        <div class="process-icon"></div>
+        <h3>現場ヒアリング</h3>
+        <p>業種・職種・作業動線・労働環境を徹底的にヒアリング。不調の「構造的な原因」を特定します。</p>
+      </div>
+      <div class="process-item anim anim-d2">
+        <div class="process-num">STEP 02</div>
+        <div class="process-icon"></div>
+        <h3>身体評価・データ収集</h3>
+        <p>動作分析・姿勢評価・身体計測を活用。数値データとして不調の実態を可視化します。</p>
+      </div>
+      <div class="process-item anim anim-d3">
+        <div class="process-num">STEP 03</div>
+        <div class="process-icon"></div>
+        <h3>教育セミナー</h3>
+        <p>現場のリアルに即した知識を社員・管理職へ。オフライン・オンライン両対応。</p>
+      </div>
+      <div class="process-item anim anim-d1">
+        <div class="process-num">STEP 04</div>
+        <div class="process-icon"></div>
+        <h3>環境設計・改善提案</h3>
+        <p>作業姿勢・デスク配置・動線設計まで具体的に提案。現場がすぐ動ける改善策を納品します。</p>
+      </div>
+      <div class="process-item anim anim-d2">
+        <div class="process-num">STEP 05</div>
+        <div class="process-icon"></div>
+        <h3>効果測定・報告書</h3>
+        <p>アンケート設計・前後比較・KPI定点観測。経営層への説明に使える根拠資料を作成します。</p>
+      </div>
+      <div class="process-item anim anim-d3">
+        <div class="process-num">STEP 06</div>
+        <div class="process-icon"></div>
+        <h3>継続サポート</h3>
+        <p>単発で終わらせない。継続的なフォローで、不調構造の根本改善を支援します。</p>
+      </div>
+    </div>
+    <div class="concept-flow anim">
+      <span class="concept-step">施術</span>
+      <span class="concept-arrow">→</span>
+      <span class="concept-step">セミナー</span>
+      <span class="concept-arrow">→</span>
+      <span class="concept-step">アンケート</span>
+      <span class="concept-arrow">→</span>
+      <span class="concept-step">報告書</span>
+      <span class="concept-arrow">→</span>
+      <span class="concept-step accent">再設計提案</span>
+      <span class="concept-arrow">→</span>
+      <span class="concept-step accent">効果測定</span>
+      <span class="concept-arrow">→</span>
+      <span class="concept-step accent">継続改善</span>
+    </div>
+  </div>
+</section>
+
+<!-- TRACK RECORD -->
+<section class="section track" id="track">
+  <div class="container">
+    <div class="track-header">
+      <div class="section-label anim">TRACK RECORD</div>
+      <h2 class="section-title anim anim-d1">産業リハビリの現場で<br><span class="text-accent">積み上げてきた実績</span></h2>
+      <p class="section-subtitle anim anim-d2" style="margin: 0 auto;">東三河エリアを中心に、製造業・公共機関・オフィス系など業種を問わず登壇・訪問。<br>現場で得たリアルなデータと知見が、御社への提案を裏付けます。</p>
+    </div>
+    <div class="track-kpi">
+      <div class="track-kpi-card anim anim-d1">
+        <div class="track-kpi-num">50<span style="font-size:1rem;">本+</span></div>
+        <div class="track-kpi-label">セミナー・<br>講演登壇実績</div>
+      </div>
+      <div class="track-kpi-card anim anim-d2">
+        <div class="track-kpi-num">18<span style="font-size:1rem;">年</span></div>
+        <div class="track-kpi-label">理学療法士としての<br>臨床キャリア</div>
+      </div>
+      <div class="track-kpi-card anim anim-d3">
+        <div class="track-kpi-num">50,000<span style="font-size:0.85rem;">人+</span></div>
+        <div class="track-kpi-label">医療機関での<br>施術実績</div>
+      </div>
+      <div class="track-kpi-card anim anim-d4">
+        <div class="track-kpi-num" style="font-size:1.4rem;">東三河</div>
+        <div class="track-kpi-label">を中心に<br>対応エリア拡大中</div>
+      </div>
+    </div>
+
+    <div class="track-cases-title anim">産業リハビリ 訪問・登壇事例</div>
+    <div class="track-cases">
+      <div class="case-card anim anim-d1">
+        <div class="case-photo" id="case-photo-1">
+          <img src="img/case-public.jpg" alt="公的機関" onerror="this.style.display='none'">
+          
+        </div>
+        <div class="case-card-body">
+          <div class="case-header">
+            
+            <div class="case-meta">
+              <div class="case-org">東三河エリア ／ 市内公的機関</div>
+              <div class="case-type">公的機関スタッフ向け 出張施術＋環境チェック</div>
+            </div>
+          </div>
+          <p class="case-body">現場スタッフへの出張施術と、作業動線・姿勢負担の環境チェックを実施。施術で得た身体所見をもとに、現場ごとの負担ポイントを特定し改善提案につなげました。</p>
+          <div class="case-tags">
+            <span class="case-tag">出張施術</span><span class="case-tag">環境チェック</span><span class="case-tag">腰痛予防</span><span class="case-tag">姿勢改善</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-card anim anim-d2">
+        <div class="case-photo" id="case-photo-2">
+          <img src="img/case-bedding.jpg" alt="寝具卸業" onerror="this.style.display='none'">
+          
+        </div>
+        <div class="case-card-body">
+          <div class="case-header">
+            
+            <div class="case-meta">
+              <div class="case-org">東三河エリア ／ 寝具卸業</div>
+              <div class="case-type">スタッフ向け腰痛予防教室＋アンケート・報告書作成</div>
+            </div>
+          </div>
+          <p class="case-body">腰痛予防セミナーを実施。事前・事後アンケートで効果測定を行い、企業向けの報告書として納品。担当者が社内への説明に活用できる根拠資料を整えました。</p>
+          <div class="case-tags">
+            <span class="case-tag">腰痛予防教室</span><span class="case-tag">アンケート設計</span><span class="case-tag">報告書納品</span><span class="case-tag">効果測定</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-card anim anim-d3">
+        <div class="case-photo" id="case-photo-3">
+          <img src="img/case-online.jpg" alt="オンライン" onerror="this.style.display='none'">
+          
+        </div>
+        <div class="case-card-body">
+          <div class="case-header">
+            
+            <div class="case-meta">
+              <div class="case-org">全国 ／ オンライン開催</div>
+              <div class="case-type">一般企業向け オンラインセミナー（複数社）</div>
+            </div>
+          </div>
+          <p class="case-body">腰痛・肩こり・眼精疲労・睡眠障害をテーマに、オンラインセミナーを複数社へ実施。質疑応答を含む双方向型の内容で高い満足度を獲得しました。</p>
+          <div class="case-tags">
+            <span class="case-tag">オンライン対応</span><span class="case-tag">眼精疲労</span><span class="case-tag">睡眠改善</span><span class="case-tag">肩こり</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="case-card anim anim-d4">
+        <div class="case-photo" id="case-photo-4">
+          <img src="img/case-factory.jpg" alt="製造業" onerror="this.style.display='none'">
+          
+        </div>
+        <div class="case-card-body">
+          <div class="case-header">
+            
+            <div class="case-meta">
+              <div class="case-org">東三河エリア ／ 複数企業</div>
+              <div class="case-type">一般企業 オフライン出張セミナー（複数社）</div>
+            </div>
+          </div>
+          <p class="case-body">腰痛・肩こり・姿勢改善をテーマとした出張セミナーを複数社に渡り実施。参加者アンケートをもとに各社の不調傾向を可視化し、職場環境への改善提案につなげました。</p>
+          <div class="case-tags">
+            <span class="case-tag">オフライン出張</span><span class="case-tag">腰痛予防</span><span class="case-tag">肩こり改善</span><span class="case-tag">姿勢分析</span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="seminar-titles-wrap anim">
+      <div class="seminar-titles-head">セミナー・講演タイトル事例</div>
+      <div class="seminar-grid">
+        <div class="seminar-item">製造現場で今すぐできる！腰痛予防と身体負担の減らし方</div>
+        <div class="seminar-item">デスクワーカーのための「肩こり・首こり」根本解消セミナー</div>
+        <div class="seminar-item">眼精疲労と集中力低下を防ぐ、目と姿勢のケア講座</div>
+        <div class="seminar-item">睡眠の質を上げると仕事のパフォーマンスが変わる理由</div>
+        <div class="seminar-item">あなたの腰痛は「環境」が原因？作業姿勢と職場環境の見直し方</div>
+        <div class="seminar-item">身体のプロが教える！健康経営を「仕組み」に変えるステップ</div>
+        <div class="seminar-item">プレゼンティーイズムを数字で見える化するデータ活用入門</div>
+        <div class="seminar-item">理学療法士が診る「働く身体」——現場から見えた不調の構造</div>
+      </div>
+      <p style="font-size:0.78rem;color:var(--text-light);margin-top:14px;">※ 企業の業種・課題に合わせてタイトル・内容をカスタマイズします。</p>
+    </div>
+  </div>
+</section>
+
+<!-- OFFER -->
+<section class="section offer" id="offer">
+  <div class="container">
+    <div class="offer-header">
+      <div class="section-label anim">OFFER</div>
+      <h2 class="section-title anim anim-d1">御社の課題に合わせた<br>3つのプラン</h2>
+      <p class="section-subtitle anim anim-d2" style="margin: 0 auto;">まずはご相談から。最適なアプローチをご提案します。</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="pricing-card anim anim-d1">
+        <div class="pricing-plan" style="color:var(--text-light);">LIGHT</div>
+        <div class="pricing-name">ライトプラン</div>
+        <p class="pricing-desc">まず始めたい企業に。1回のセミナーで現状を可視化し、課題把握から始めます。</p>
+        <ul class="pricing-features">
+          <li>オンライン／オフライン選択可</li>
+          <li>事後アンケート集計・フィードバック</li>
+          <li>簡易レポート納品</li>
+        </ul>
+        <a href="#contact" class="pricing-cta pcta-outline">このプランで相談する</a>
+      </div>
+      <div class="pricing-card featured anim anim-d2">
+        <div class="pricing-badge">Most Popular</div>
+        <div class="pricing-plan">STANDARD</div>
+        <div class="pricing-name">スタンダードプラン</div>
+        <p class="pricing-desc">現場訪問から施術・セミナー・改善提案まで。健康経営を本格的に動かします。</p>
+        <ul class="pricing-features">
+          <li>現場ヒアリング・環境チェック</li>
+          <li>個別施術＋グループセミナー</li>
+          <li>効果測定・詳細報告書納品</li>
+          <li>改善提案レポート</li>
+        </ul>
+        <a href="#contact" class="pricing-cta pcta-featured">このプランで相談する</a>
+      </div>
+      <div class="pricing-card anim anim-d3">
+        <div class="pricing-plan" style="color:var(--text-light);">MAX</div>
+        <div class="pricing-name">マックスプラン</div>
+        <p class="pricing-desc">継続的な伴走で、不調構造を根本から変える。データで成果を示し続けます。</p>
+        <ul class="pricing-features">
+          <li>スタンダード全内容込み</li>
+          <li>定期訪問・継続施術プログラム</li>
+          <li>社内担当者向けセルフケア指導</li>
+          <li>年間フォローアップ面談</li>
+        </ul>
+        <a href="#contact" class="pricing-cta pcta-outline">このプランで相談する</a>
+      </div>
+    </div>
+    <div class="narrowing-card anim">
+      <div>
+        <h3>こんな企業様を特に歓迎します</h3>
+        <div class="narrowing-tags">
+          <span class="narrowing-tag">製造業・物流</span>
+          <span class="narrowing-tag">事務・オフィス系</span>
+          <span class="narrowing-tag">公共機関・自治体</span>
+          <span class="narrowing-tag">健康経営に取り組む企業</span>
+          <span class="narrowing-tag">東三河エリア</span>
+        </div>
+      </div>
+      <a href="#contact" class="btn-primary">まず相談してみる →</a>
+    </div>
+  </div>
+</section>
+
+<!-- TIMELINE -->
+<section class="section timeline-section">
+  <div class="container">
+    <div style="text-align:center;">
+      <div class="section-label anim">FLOW</div>
+      <h2 class="section-title anim anim-d1" style="text-align:center;">導入の流れ</h2>
+    </div>
+    <div class="timeline-grid">
+      <div class="timeline-card anim anim-d1">
+        <div class="timeline-num">01</div>
+        <h3>無料相談</h3>
+        <p>Zoom or 訪問。現状課題をお聞きし、最適なプランをご提案します。</p>
+      </div>
+      <div class="timeline-card anim anim-d2">
+        <div class="timeline-num">02</div>
+        <h3>ヒアリング・設計</h3>
+        <p>業種・職種・課題を深掘り。御社専用のプログラムを設計します。</p>
+      </div>
+      <div class="timeline-card anim anim-d3">
+        <div class="timeline-num">03</div>
+        <h3>実施・効果測定</h3>
+        <p>施術・セミナー・環境改善を実施。前後比較データで効果を可視化します。</p>
+      </div>
+      <div class="timeline-card anim anim-d4">
+        <div class="timeline-num">04</div>
+        <h3>報告・改善提案</h3>
+        <p>経営層への報告資料納品。継続的な改善サイクルを設計します。</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- PROFILE -->
+<section class="section profile" id="profile">
+  <div class="container">
+    <div class="profile-inner">
+      <div>
+        <div class="photo-frame profile-photo anim" id="profile-photo">
+          <img src="img/profile.jpg" alt="前納 啓典" onerror="this.style.display='none'">
+          
+        </div>
+      </div>
+      <div>
+        <div class="section-label anim">PROFILE</div>
+        <h2 class="profile-name anim anim-d1">前納 啓典</h2>
+        <div class="profile-role anim anim-d1">りらぼ ／ 理学療法士・産業リハビリ専門家</div>
+        <p class="profile-text anim anim-d2">整形外科クリニックで18年・延べ5万人以上の身体に触れてきた理学療法士。専門は<strong>運動器（肩・腰・膝・首など筋骨格系）</strong>の評価と治療で、精密な動作分析と身体機能評価が強みです。</p>
+        <p class="profile-text anim anim-d2">臨床現場で感じ続けた「もどかしさ」がありました。<br><strong>どれだけ丁寧に治療しても、患者が職場に戻ると不調が繰り返される。</strong><br>原因は身体だけでなく、職場環境・作業姿勢・身体負担の構造にある——。その気づきが、企業の現場に直接入る産業リハビリへの挑戦につながりました。</p>
+        <p class="profile-text anim anim-d2">現在は東三河エリアを中心に、製造業・公共機関・オフィス系企業への出張施術・セミナー・環境改善提案を展開。セミナー登壇は<strong>オンライン・オフライン合わせて50本以上</strong>。</p>
+        <div class="profile-tags anim anim-d3">
+          <span class="ptag">理学療法士 18年</span>
+          <span class="ptag">産業リハビリ専門</span>
+          <span class="ptag">動作・姿勢分析</span>
+          <span class="ptag">東三河エリア拠点</span>
+          <span class="ptag">セミナー登壇 50本+</span>
+          <span class="ptag">企業向け身体負担設計</span>
+        </div>
+        <div class="profile-quote anim anim-d3">
+          <p>「単なるセミナー講師ではなく、<strong>身体負担を設計し直す専門家</strong>として。<br>触れる・測る・設計する——<br>現場に入ることで初めて見えるデータを起点に、企業の不調構造を根本から変えます。」</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- FAQ -->
+<section class="section faq">
+  <div class="container">
+    <div class="faq-inner">
+      <div style="text-align:center;">
+        <div class="section-label anim">FAQ</div>
+        <h2 class="section-title anim anim-d1" style="text-align:center;">よくある質問</h2>
+      </div>
+      <div class="faq-list">
+        <div class="faq-item anim anim-d1">
+          <p class="faq-q">Q. 製造業以外でも対応できますか？</p>
+          <p class="faq-a">はい。オフィス系・物流・医療・飲食・農業など、業種を問わず対応しております。それぞれの作業特性に合わせたプログラムをカスタマイズして提供します。</p>
+        </div>
+        <div class="faq-item anim anim-d2">
+          <p class="faq-q">Q. 社員数が少ない（10名以下）でも利用できますか？</p>
+          <p class="faq-a">もちろんです。少人数の職場こそ、一人ひとりの不調が業務に直結します。小規模事業所向けのプランも別途ご相談ください。</p>
+        </div>
+        <div class="faq-item anim anim-d3">
+          <p class="faq-q">Q. 愛知県外でも対応可能ですか？</p>
+          <p class="faq-a">オンラインセミナーは全国対応しております。出張訪問については別途ご相談ください。</p>
+        </div>
+        <div class="faq-item anim anim-d4">
+          <p class="faq-q">Q. 費用の目安を教えてください。</p>
+          <p class="faq-a">企業規模・内容・回数によって異なります。まず無料相談でご要望をお聞きしたうえで、最適なプランと費用をご提案します。お気軽にご連絡ください。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<section class="contact-section" id="contact">
+  <div class="container">
+    <div class="contact-header">
+      <div class="section-label anim">CONTACT</div>
+      <h2 class="section-title anim anim-d1">まずは 30 分の無料相談から</h2>
+      <p class="section-subtitle anim anim-d2" style="margin: 0 auto;">御社の不調傾向を、その場で簡易診断します。</p>
+    </div>
+    <div class="contact-inner">
+      <!-- 左：連絡先情報 -->
+      <div class="contact-info anim">
+        <div class="contact-info-title">お問合せ窓口</div>
+        <div class="contact-info-desc">下記フォームよりお気軽にご連絡ください。担当者より順次ご返信いたします。</div>
+        <div class="contact-info-item">
+          <div class="contact-info-label">EMAIL</div>
+          <div class="contact-info-value">k.a.m.maeno@gmail.com</div>
+        </div>
+        <div class="contact-info-item">
+          <div class="contact-info-label">TEL</div>
+          <div class="contact-info-value">080-4222-0651</div>
+          <div class="contact-info-sub">平日 10:00 - 18:00</div>
+        </div>
+      </div>
+
+      <!-- 右：フォーム -->
+      <div class="contact-form-wrap anim anim-d1">
+        <form id="contact-form" onsubmit="handleSubmit(event)">
+          <div class="form-row single">
+            <div class="form-group">
+              <label class="form-label">会社名 <span class="form-badge badge-required">必須</span></label>
+              <input type="text" data-field="company" class="form-control" placeholder="例：株式会社〇〇" required>
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-group">
+              <label class="form-label">ご担当者名 <span class="form-badge badge-required">必須</span></label>
+              <input type="text" data-field="name" class="form-control" placeholder="例：山田 太郎" required>
+            </div>
+            <div class="form-group">
+              <label class="form-label">電話番号 <span class="form-badge badge-optional">任意</span></label>
+              <input type="tel" data-field="phone" class="form-control" placeholder="例：090-0000-0000">
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label class="form-label">メールアドレス <span class="form-badge badge-required">必須</span></label>
+              <input type="email" data-field="email" class="form-control" placeholder="例：taro@example.co.jp" required>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label class="form-label">従業員数 <span class="form-badge badge-required">必須</span></label>
+              <select data-field="size" class="form-control" required>
+                <option value="" disabled selected>選択してください</option>
+                <option>1〜9名</option>
+                <option>10〜29名</option>
+                <option>30〜49名</option>
+                <option>50〜99名</option>
+                <option>100〜299名</option>
+                <option>300名以上</option>
+              </select>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label class="form-label">社員様に多いお悩み <span class="form-badge badge-optional">複数選択可</span></label>
+              <div class="chip-group">
+                <label class="chip"><input type="checkbox" data-field="worry" value="肩こり"><span>肩こり</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="腰痛"><span>腰痛</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="首の痛み"><span>首の痛み</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="眼精疲労"><span>眼精疲労</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="膝・足の痛み"><span>膝・足の痛み</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="疲労感"><span>疲労感</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="集中力の低下"><span>集中力の低下</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="転倒・労災リスク"><span>転倒・労災リスク</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="まだ把握できていない"><span>まだ把握できていない</span></label>
+                <label class="chip"><input type="checkbox" data-field="worry" value="その他"><span>その他</span></label>
+              </div>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label class="form-label">ご興味のある内容 <span class="form-badge badge-optional">複数選択可</span></label>
+              <div class="chip-group">
+                <label class="chip"><input type="checkbox" data-field="interest" value="30分無料相談"><span>30分無料相談</span></label>
+                <label class="chip"><input type="checkbox" data-field="interest" value="社員向け健康セミナー"><span>社員向け健康セミナー</span></label>
+                <label class="chip"><input type="checkbox" data-field="interest" value="肩こり・腰痛予防セミナー"><span>肩こり・腰痛予防セミナー</span></label>
+                <label class="chip"><input type="checkbox" data-field="interest" value="職場環境・作業姿勢のチェック"><span>職場環境・作業姿勢のチェック</span></label>
+                <label class="chip"><input type="checkbox" data-field="interest" value="社員向け個別コンディショニング"><span>社員向け個別コンディショニング</span></label>
+                <label class="chip"><input type="checkbox" data-field="interest" value="出張施術・ストレッチ"><span>出張施術・ストレッチ</span></label>
+                <label class="chip"><input type="checkbox" data-field="interest" value="健康課題のアンケート調査"><span>健康課題のアンケート調査</span></label>
+                <label class="chip"><input type="checkbox" data-field="interest" value="まだ決まっていないので相談したい"><span>まだ決まっていないので相談したい</span></label>
+              </div>
+            </div>
+          </div>
+          <div class="form-row single">
+            <div class="form-group">
+              <label class="form-label">現在の課題・ご相談内容 <span class="form-badge badge-optional">任意</span></label>
+              <textarea data-field="message" class="form-control" placeholder="例：社員の腰痛が多い、肩こり対策をしたい、セミナーを検討している、など"></textarea>
+            </div>
+          </div>
+          <button type="submit" class="form-submit">無料相談を申し込む →</button>
+          <p class="form-note">ご相談・お見積り完全無料 ｜ 強引な営業は一切行いません</p>
+        </form>
+        <!-- 送信完了メッセージ -->
+        <div id="contact-success" class="contact-success">
+          <div class="contact-success-icon">
+            <svg width="36" height="36" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 6 9 17l-5-5"/></svg>
+          </div>
+          <h3>送信が完了しました</h3>
+          <p>お問合せありがとうございます。<br>担当者より順次ご返信いたしますので、少々お待ちください。</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 固定バッジ -->
+<a href="#contact" class="contact-badge">
+  <div class="contact-badge-dot">今月あと3社</div>
+  <div class="contact-badge-sub">初回限定 / 無料相談 30 分</div>
+  <span class="contact-badge-btn">お問合せ →</span>
+</a>
+
+<!-- FOOTER -->
+<footer>
+  <div class="container">
+    <div class="footer-inner">
+      <a href="#top" class="footer-logo" aria-label="りらぼ - トップへ">
+        <span class="footer-logo-icon">
+          <svg viewBox="0 0 34 34" width="24" height="24" fill="none" xmlns="http://www.w3.org/2000/svg" aria-hidden="true">
+            <circle cx="17" cy="6" r="3.8" fill="white"/>
+            <line x1="17" y1="10.5" x2="17" y2="23" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="17" y1="15" x2="9" y2="10" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="17" y1="15" x2="26" y2="18" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="17" y1="23" x2="11" y2="32" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+            <line x1="17" y1="23" x2="24" y2="32" stroke="white" stroke-width="2.4" stroke-linecap="round"/>
+            <path d="M10 4.5 Q17 0 24 4.5" stroke="white" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0.65"/>
+          </svg>
+        </span>
+        <span class="nav-logo-text">
+          <span class="footer-logo-ja">りらぼ</span>
+          <span class="footer-logo-en">RILABO</span>
+        </span>
+      </a>
+      <p class="footer-copy">© 2024 りらぼ. All rights reserved.</p>
+    </div>
+  </div>
+</footer>
+
+<script src="blog/posts.js"></script>
+<script>
+/* Nav scroll */
+const header = document.getElementById('header');
+window.addEventListener('scroll', () => header.classList.toggle('scrolled', window.scrollY > 10));
+
+/* Smooth scroll */
+document.querySelectorAll('a[href^="#"]').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const t = document.querySelector(a.getAttribute('href'));
+    if (t) t.scrollIntoView({ behavior: 'smooth', block: 'start' });
+  });
+});
+
+/* Animate on scroll */
+const io = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1, rootMargin: '0px 0px -48px 0px' });
+document.querySelectorAll('.anim').forEach(el => io.observe(el));
+
+/* ===== BLOG POSTS (from blog/posts.js) ===== */
+function renderBlogPreview() {
+  const grid = document.getElementById('blog-grid');
+  if (!grid) return;
+
+  if (typeof BLOG_POSTS === 'undefined' || BLOG_POSTS.length === 0) {
+    grid.innerHTML = `<div class="note-error" style="grid-column:1/-1;">まだ記事がありません。</div>`;
+    return;
+  }
+
+  // 最新3件を表示
+  const posts = BLOG_POSTS.slice(0, 3);
+
+  grid.innerHTML = posts.map(post => {
+    const date = new Date(post.date).toLocaleDateString('ja-JP', { year:'numeric', month:'long', day:'numeric' });
+    const thumb = post.thumb
+      ? `<img class="note-thumb" src="${post.thumb}" alt="${post.title}" loading="lazy">`
+      : `<div class="note-thumb-placeholder"></div>`;
+    const tags = (post.tags || []).slice(0, 3).map(t =>
+      `<span class="note-card-tag">${t}</span>`
+    ).join('');
+
+    return `
+      <a class="note-card" href="blog/posts/${post.slug}.html">
+        ${thumb}
+        <div class="note-card-body">
+          <div class="note-card-tags">${tags}</div>
+          <div class="note-card-date">${date}</div>
+          <div class="note-card-title">${post.title}</div>
+          <div class="note-card-desc">${post.desc}</div>
+          <div class="note-card-link">続きを読む →</div>
+        </div>
+      </a>`;
+  }).join('');
+}
+renderBlogPreview();
+
+/* Form submit */
+/* ===== Googleフォーム連携設定 ===== */
+const GFORM = {
+  FORM_ID: '1FAIpQLSfZw-ZRv_ey7gH9cFnATbrbOv6QphdWy4vhQVNt4cnp8ida4A',
+  fields: {
+    company:  'entry.615911986',   // 会社名
+    name:     'entry.1152739660',  // ご担当者名
+    email:    'entry.1672041129',  // メールアドレス
+    phone:    'entry.430755175',   // 電話番号
+    size:     'entry.756285800',   // 従業員数
+    worry:    'entry.585120246',   // 社員様に多いお悩み（複数）
+    interest: 'entry.1981941462',  // ご興味のある内容（複数）
+    message:  'entry.1392100613',  // 現在の課題・ご相談内容
+  },
+};
+
+function handleSubmit(e) {
+  e.preventDefault();
+  const form = e.target;
+  const btn = form.querySelector('.form-submit');
+  btn.disabled = true;
+  btn.textContent = '送信中…';
+
+  const params = new URLSearchParams();
+  form.querySelectorAll('[data-field]').forEach(el => {
+    const entry = GFORM.fields[el.dataset.field];
+    if (!entry) return;
+    if (el.type === 'checkbox') {
+      if (el.checked) params.append(entry, el.value);
+    } else if (el.value) {
+      params.append(entry, el.value);
+    }
+  });
+
+  const url = 'https://docs.google.com/forms/d/e/' + GFORM.FORM_ID + '/formResponse';
+  fetch(url, { method: 'POST', mode: 'no-cors', body: params })
+    .catch(() => {})
+    .finally(() => {
+      form.style.display = 'none';
+      document.getElementById('contact-success').classList.add('show');
+    });
+}
+
+/* Photo drag & drop */
+(function() {
+  function applyImage(container, file) {
+    if (!file || !file.type.startsWith('image/')) return;
+    const reader = new FileReader();
+    reader.onload = ev => {
+      let img = container.querySelector('img');
+      if (!img) {
+        img = document.createElement('img');
+        img.style.cssText = 'width:100%;height:100%;object-fit:cover;display:block;transition:transform 0.6s ease;';
+        container.insertBefore(img, container.firstChild);
+      }
+      img.src = ev.target.result;
+      img.style.display = 'block';
+      img.onerror = null;
+      const badge = container.querySelector('.photo-badge');
+      if (badge) { badge.textContent = '設定済み'; badge.style.color = '#559228'; }
+    };
+    reader.readAsDataURL(file);
+  }
+  function initDrop(el) {
+    el.style.cursor = 'pointer';
+    el.title = 'クリックまたはドラッグ&ドロップで写真を設定';
+    const inp = document.createElement('input');
+    inp.type = 'file'; inp.accept = 'image/*'; inp.style.display = 'none';
+    el.appendChild(inp);
+    el.addEventListener('click', e => { if (e.target === inp) return; inp.click(); });
+    inp.addEventListener('change', () => { if (inp.files[0]) applyImage(el, inp.files[0]); });
+    el.addEventListener('dragover', e => { e.preventDefault(); el.style.outline = '2.5px solid #72B83E'; el.style.outlineOffset = '3px'; });
+    el.addEventListener('dragleave', () => { el.style.outline = ''; el.style.outlineOffset = ''; });
+    el.addEventListener('drop', e => { e.preventDefault(); el.style.outline = ''; el.style.outlineOffset = ''; applyImage(el, e.dataTransfer.files[0]); });
+  }
+  document.querySelectorAll('.photo-frame, .case-photo').forEach(initDrop);
+})();
+</script>
+</body>
+</html>
